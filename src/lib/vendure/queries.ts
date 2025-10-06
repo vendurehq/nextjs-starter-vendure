@@ -1,4 +1,5 @@
 import { graphql } from '@/graphql';
+import { ProductCardFragment } from './fragments';
 
 export const GetTopCollectionsQuery = graphql(`
     query GetTopCollections {
@@ -28,23 +29,7 @@ export const SearchProductsQuery = graphql(`
         search(input: $input) {
             totalItems
             items {
-                productId
-                productName
-                slug
-                productAsset {
-                    id
-                    preview
-                }
-                priceWithTax {
-                    ... on PriceRange {
-                        min
-                        max
-                    }
-                    ... on SinglePrice {
-                        value
-                    }
-                }
-                currencyCode
+                ...ProductCard
             }
             facetValues {
                 count
@@ -59,7 +44,7 @@ export const SearchProductsQuery = graphql(`
             }
         }
     }
-`);
+`, [ProductCardFragment]);
 
 export const GetProductDetailQuery = graphql(`
     query GetProductDetail($slug: String!) {
@@ -424,3 +409,24 @@ export const GetActiveChannelQuery = graphql(`
         }
     }
 `);
+
+export const GetCollectionProductsQuery = graphql(`
+    query GetCollectionProducts($slug: String!, $input: SearchInput!) {
+        collection(slug: $slug) {
+            id
+            name
+            slug
+            description
+            featuredAsset {
+                id
+                preview
+            }
+        }
+        search(input: $input) {
+            totalItems
+            items {
+                ...ProductCard
+            }
+        }
+    }
+`, [ProductCardFragment]);

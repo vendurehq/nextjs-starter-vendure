@@ -2,7 +2,8 @@ import { graphql, type ResultOf, type VariablesOf } from '@/graphql';
 import type { TadaDocumentNode } from 'gql.tada';
 import { print } from 'graphql';
 import { getAuthToken } from '@/lib/auth';
-import { getCurrencyCode, getLanguageCode } from '@/lib/settings';
+import { getCurrencyCode } from '@/lib/settings';
+import { getLocale } from 'next-intl/server';
 
 const VENDURE_API_URL = process.env.VENDURE_SHOP_API_URL || process.env.NEXT_PUBLIC_VENDURE_SHOP_API_URL;
 const VENDURE_CHANNEL_TOKEN = process.env.VENDURE_CHANNEL_TOKEN || process.env.NEXT_PUBLIC_VENDURE_CHANNEL_TOKEN || '__default_channel__';
@@ -83,12 +84,12 @@ export async function query<TResult, TVariables>(
   // Set the channel token header (use provided channelToken or default)
   headers[VENDURE_CHANNEL_TOKEN_HEADER] = channelToken || VENDURE_CHANNEL_TOKEN;
 
-  // Fetch from cookies if not provided and skip flags are not set
+  // Get language from next-intl and currency from cookies if not provided and skip flags are not set
   let finalLanguageCode = languageCode;
   let finalCurrencyCode = currencyCode;
 
   if (!skipLanguageCookie && !languageCode) {
-    finalLanguageCode = await getLanguageCode();
+    finalLanguageCode = await getLocale();
   }
 
   if (!skipCurrencyCookie && !currencyCode) {

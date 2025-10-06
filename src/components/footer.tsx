@@ -1,5 +1,6 @@
-import Link from 'next/link';
+
 import { getTopCollections } from '@/lib/collections';
+import {Link} from "@/i18n/navigation";
 
 export async function Footer() {
     const collections = await getTopCollections();

@@ -1,16 +1,16 @@
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import {useSearchParams} from 'next/navigation';
+import {ChevronLeft, ChevronRight} from 'lucide-react';
+import {Button} from '@/components/ui/button';
+import {Link, usePathname} from "@/i18n/navigation";
 
 interface PaginationProps {
     currentPage: number;
     totalPages: number;
 }
 
-export function Pagination({ currentPage, totalPages }: PaginationProps) {
+export function Pagination({currentPage, totalPages}: PaginationProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
@@ -59,11 +59,11 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
             >
                 {currentPage === 1 ? (
                     <span className="cursor-not-allowed">
-                        <ChevronLeft className="h-4 w-4" />
+                        <ChevronLeft className="h-4 w-4"/>
                     </span>
                 ) : (
                     <Link href={createPageUrl(currentPage - 1)}>
-                        <ChevronLeft className="h-4 w-4" />
+                        <ChevronLeft className="h-4 w-4"/>
                     </Link>
                 )}
             </Button>
@@ -105,11 +105,11 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
             >
                 {currentPage === totalPages ? (
                     <span className="cursor-not-allowed">
-                        <ChevronRight className="h-4 w-4" />
+                        <ChevronRight className="h-4 w-4"/>
                     </span>
                 ) : (
                     <Link href={createPageUrl(currentPage + 1)}>
-                        <ChevronRight className="h-4 w-4" />
+                        <ChevronRight className="h-4 w-4"/>
                     </Link>
                 )}
             </Button>

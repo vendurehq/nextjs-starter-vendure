@@ -1,6 +1,6 @@
-import { unstable_cache } from 'next/cache';
-import { query } from '@/lib/vendure/api';
-import { GetTopCollectionsQuery } from '@/lib/vendure/queries';
+import {unstable_cache} from 'next/cache';
+import {query} from '@/lib/vendure/api';
+import {GetTopCollectionsQuery} from '@/lib/vendure/queries';
 
 export const getTopCollections = unstable_cache(
     async (languageCode?: string) => {
@@ -11,7 +11,7 @@ export const getTopCollections = unstable_cache(
         });
         return result.data.collections.items;
     },
-    (languageCode) => ['top-collections', languageCode || 'default'],
+    ['top-collections'],
     {
         revalidate: 3600, // Cache for 1 hour
         tags: ['collections']

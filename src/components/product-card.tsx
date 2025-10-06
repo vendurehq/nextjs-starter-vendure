@@ -1,33 +1,19 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { formatPrice } from '@/lib/format';
-import { useChannel } from '@/providers/channel-provider';
+import {formatPrice} from '@/lib/format';
+import {useChannel} from '@/providers/channel-provider';
+import {Link} from "@/i18n/navigation";
+import {FragmentOf, readFragment} from '@/graphql';
+import {ProductCardFragment} from '@/lib/vendure/fragments';
 
 interface ProductCardProps {
-    product: {
-        productId: string;
-        productName: string;
-        slug: string;
-        productAsset?: {
-            id: string;
-            preview: string;
-        };
-        priceWithTax: {
-            min?: number;
-            max?: number;
-            value?: number;
-        };
-    };
+    product: FragmentOf<typeof ProductCardFragment>;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
-    const { currencyCode } = useChannel();
-    const price = product.priceWithTax.value || product.priceWithTax.min || 0;
-    const hasRange = product.priceWithTax.min !== undefined &&
-                     product.priceWithTax.max !== undefined &&
-                     product.priceWithTax.min !== product.priceWithTax.max;
+export function ProductCard({product: productProp}: ProductCardProps) {
+    const product = readFragment(ProductCardFragment, productProp);
+    const {currencyCode} = useChannel();
 
     return (
         <Link
@@ -54,13 +40,13 @@ export function ProductCard({ product }: ProductCardProps) {
                     {product.productName}
                 </h3>
                 <p className="text-lg font-bold">
-                    {hasRange ? (
+                    {product.priceWithTax.__typename === 'PriceRange' ? (
                         <>
-                            {formatPrice(product.priceWithTax.min!, currencyCode)} - {formatPrice(product.priceWithTax.max!, currencyCode)}
+                            from {formatPrice(product.priceWithTax.min, currencyCode)}
                         </>
-                    ) : (
-                        formatPrice(price, currencyCode)
-                    )}
+                    ) : product.priceWithTax.__typename === 'SinglePrice' ? (
+                        formatPrice(product.priceWithTax.value, currencyCode)
+                    ) : null}
                 </p>
             </div>
         </Link>

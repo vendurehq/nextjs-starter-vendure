@@ -58,7 +58,7 @@ export default async function OrderDetailPage({
         <div>
             <div className="mb-6">
                 <Button variant="ghost" size="sm" asChild className="mb-4">
-                    <Link href="/account/orders">
+                    <Link href="/[locale]/account/orders">
                         <ChevronLeft className="h-4 w-4 mr-2" />
                         Back to Orders
                     </Link>
@@ -100,7 +100,7 @@ export default async function OrderDetailPage({
                                         </div>
                                         <div className="flex-1">
                                             <Link
-                                                href={`/product/${line.productVariant.product.slug}`}
+                                                href={`/src/app/%5Blocale%5D/product/${line.productVariant.product.slug}`}
                                                 className="font-medium hover:underline"
                                             >
                                                 {line.productVariant.product.name}

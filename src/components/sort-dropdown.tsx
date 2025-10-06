@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+
 import {
     Select,
     SelectContent,
@@ -8,12 +8,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import {usePathname, useRouter} from "@/i18n/navigation";
+import {useSearchParams} from "next/navigation";
 
 const sortOptions = [
-    { value: 'name-asc', label: 'Name: A to Z' },
-    { value: 'name-desc', label: 'Name: Z to A' },
-    { value: 'price-asc', label: 'Price: Low to High' },
-    { value: 'price-desc', label: 'Price: High to Low' },
+    {value: 'name-asc', label: 'Name: A to Z'},
+    {value: 'name-desc', label: 'Name: Z to A'},
+    {value: 'price-asc', label: 'Price: Low to High'},
+    {value: 'price-desc', label: 'Price: High to Low'},
 ];
 
 export function SortDropdown() {
@@ -33,7 +35,7 @@ export function SortDropdown() {
     return (
         <Select value={currentSort} onValueChange={handleSortChange}>
             <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
+                <SelectValue placeholder="Sort by"/>
             </SelectTrigger>
             <SelectContent>
                 {sortOptions.map((option) => (

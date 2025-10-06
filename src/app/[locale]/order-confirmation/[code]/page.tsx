@@ -59,7 +59,7 @@ export default async function OrderConfirmationPage({ params }: { params: { code
             We couldn't find an order with that code.
           </p>
           <Button asChild>
-            <Link href="/">Return to Home</Link>
+            <Link href="/public">Return to Home</Link>
           </Button>
         </div>
       </div>
@@ -152,7 +152,7 @@ export default async function OrderConfirmationPage({ params }: { params: { code
 
         <div className="flex gap-4">
           <Button asChild className="flex-1">
-            <Link href="/">Continue Shopping</Link>
+            <Link href="/public">Continue Shopping</Link>
           </Button>
         </div>
       </div>

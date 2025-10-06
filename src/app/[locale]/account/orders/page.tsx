@@ -111,7 +111,7 @@ export default async function OrdersPage({
                                         <TableCell className="font-medium">
                                             <Button asChild variant="outline">
                                                 <Link
-                                                    href={`/account/orders/${order.code}`}
+                                                    href={`/src/app/%5Blocale%5D/account/orders/${order.code}`}
                                                 >
                                                     {order.code} <ArrowRightIcon/>
                                                 </Link>
@@ -174,7 +174,7 @@ export default async function OrdersPage({
                                                 return (
                                                     <PaginationItem key={page}>
                                                         <PaginationLink
-                                                            href={`/account/orders?page=${page}`}
+                                                            href={`/src/app/%5Blocale%5D/account/orders?page=${page}`}
                                                             isActive={page === currentPage}
                                                         >
                                                             {page}

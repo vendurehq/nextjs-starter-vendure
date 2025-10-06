@@ -2,10 +2,11 @@ import { ResultOf } from '@/graphql';
 import { ProductCard } from './product-card';
 import { Pagination } from './pagination';
 import { SortDropdown } from './sort-dropdown';
+import {SearchProductsQuery} from "@/lib/vendure/queries";
 
 interface ProductGridProps {
     productDataPromise: Promise<{
-        data: ResultOf<any>;
+        data: ResultOf<typeof SearchProductsQuery>;
         token?: string;
     }>;
     currentPage: number;

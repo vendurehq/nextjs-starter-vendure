@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { ShoppingCart, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {ShoppingCart, User} from "lucide-react";
+import {Button} from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,21 +8,20 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { query } from "@/lib/vendure/api";
-import { GetActiveCustomerQuery, GetActiveOrderQuery } from "@/lib/vendure/queries";
-import { SearchInput } from "@/components/search-input";
-import { getTopCollections } from "@/lib/collections";
-import { CurrencyPicker } from "@/components/currency-picker";
-import { LanguagePicker } from "@/components/language-picker";
-import { getLanguageCode } from "@/lib/settings";
+import {query} from "@/lib/vendure/api";
+import {GetActiveCustomerQuery, GetActiveOrderQuery} from "@/lib/vendure/queries";
+import {SearchInput} from "@/components/search-input";
+import {getTopCollections} from "@/lib/collections";
+import {CurrencyPicker} from "@/components/currency-picker";
+import {LanguagePicker} from "@/components/language-picker";
+import {Link} from "@/i18n/navigation";
 
-export async function Navbar() {
-    const languageCode = await getLanguageCode();
+export async function Navbar({locale}: { locale: string }) {
 
     const [collections, customerResult, orderResult] = await Promise.all([
-        getTopCollections(languageCode),
-        query(GetActiveCustomerQuery, undefined, { useAuthToken: true }),
-        query(GetActiveOrderQuery, undefined, { useAuthToken: true, tags: ['cart'] }),
+        getTopCollections(locale),
+        query(GetActiveCustomerQuery, undefined, {useAuthToken: true}),
+        query(GetActiveOrderQuery, undefined, {useAuthToken: true, tags: ['cart']}),
     ]);
 
     const customer = customerResult.data.activeCustomer;
@@ -57,25 +55,26 @@ export async function Navbar() {
                     <div className="flex items-center gap-4">
                         {/* Search Input */}
                         <div className="hidden lg:flex items-center">
-                            <SearchInput />
+                            <SearchInput/>
                         </div>
 
                         {/* Language Picker */}
                         <div className="hidden md:block">
-                            <LanguagePicker />
+                            <LanguagePicker/>
                         </div>
 
                         {/* Currency Picker */}
                         <div className="hidden md:block">
-                            <CurrencyPicker />
+                            <CurrencyPicker/>
                         </div>
 
                         {/* Cart Button */}
                         <Button variant="ghost" size="icon" asChild className="relative">
                             <Link href="/cart">
-                                <ShoppingCart className="h-5 w-5" />
+                                <ShoppingCart className="h-5 w-5"/>
                                 {cartItemCount > 0 && (
-                                    <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                    <span
+                                        className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                                         {cartItemCount}
                                     </span>
                                 )}
@@ -88,7 +87,7 @@ export async function Navbar() {
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" size="icon">
-                                        <User className="h-5 w-5" />
+                                        <User className="h-5 w-5"/>
                                         <span className="sr-only">User menu</span>
                                     </Button>
                                 </DropdownMenuTrigger>
@@ -96,14 +95,14 @@ export async function Navbar() {
                                     <DropdownMenuLabel>
                                         Hi, {customer.firstName}
                                     </DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
+                                    <DropdownMenuSeparator/>
                                     <DropdownMenuItem asChild>
                                         <Link href="/account/profile">Profile</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
                                         <Link href="/account/orders">Orders</Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
+                                    <DropdownMenuSeparator/>
                                     <DropdownMenuItem>
                                         Sign Out
                                     </DropdownMenuItem>

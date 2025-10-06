@@ -55,7 +55,7 @@ export default async function CartPage() {
             Add some items to your cart to get started
           </p>
           <Button asChild>
-            <Link href="/">Continue Shopping</Link>
+            <Link href="/public">Continue Shopping</Link>
           </Button>
         </div>
       </div>
@@ -75,7 +75,7 @@ export default async function CartPage() {
             >
               {line.productVariant.product.featuredAsset && (
                 <Link
-                  href={`/product/${line.productVariant.product.slug}`}
+                  href={`/src/app/%5Blocale%5D/product/${line.productVariant.product.slug}`}
                   className="flex-shrink-0"
                 >
                   <Image
@@ -90,7 +90,7 @@ export default async function CartPage() {
 
               <div className="flex-grow min-w-0">
                 <Link
-                  href={`/product/${line.productVariant.product.slug}`}
+                  href={`/src/app/%5Blocale%5D/product/${line.productVariant.product.slug}`}
                   className="font-semibold hover:underline block"
                 >
                   {line.productVariant.product.name}
@@ -228,7 +228,7 @@ export default async function CartPage() {
             </Button>
 
             <Button variant="outline" className="w-full mt-2" asChild>
-              <Link href="/">Continue Shopping</Link>
+              <Link href="/public">Continue Shopping</Link>
             </Button>
           </div>
 
