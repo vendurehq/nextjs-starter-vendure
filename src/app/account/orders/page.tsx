@@ -67,7 +67,7 @@ export default async function OrdersPage(props: {
                 },
             },
         },
-        {useAuthToken: true, languageCode: params.locale}
+        {useAuthToken: true}
     );
 
     if (!data.activeCustomer) {

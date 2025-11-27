@@ -3,17 +3,26 @@ import { GetProductDetailQuery } from '@/lib/vendure/queries';
 import { ProductImageCarousel } from '@/components/product-image-carousel';
 import { ProductInfo } from '@/components/product-info';
 import { notFound } from 'next/navigation';
+import { cacheLife, cacheTag } from 'next/cache';
 
 interface ProductDetailPageProps {
     params: Promise<{ slug: string }>;
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+async function getProductData(slug: string) {
+    'use cache';
+    cacheLife('hours');
+    cacheTag(`product-${slug}`);
+
+    return await query(GetProductDetailQuery, { slug });
+}
+
 export default async function ProductDetailPage({ params, searchParams }: ProductDetailPageProps) {
     const { slug } = await params;
     const searchParamsResolved = await searchParams;
 
-    const result = await query(GetProductDetailQuery, { slug });
+    const result = await getProductData(slug);
 
     const product = result.data.product;
 

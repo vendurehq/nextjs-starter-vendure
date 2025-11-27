@@ -7,7 +7,7 @@ const navItems = [
     {href: '/account/profile', label: 'Profile', icon: User},
 ];
 
-export default async function AccountLayout({children}: LayoutProps<'/[locale]/account'>) {
+export default async function AccountLayout({children}: LayoutProps<'/account'>) {
     return (
         <div className="container mx-auto px-4 py-30">
             <div className="flex gap-8">

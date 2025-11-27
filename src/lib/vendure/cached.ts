@@ -10,9 +10,6 @@ export async function getActiveChannelCached() {
     'use cache';
     cacheLife('hours');
 
-    const result = await query(GetActiveChannelQuery, undefined, {
-        skipLanguageCookie: true,
-        skipCurrencyCookie: true,
-    });
+    const result = await query(GetActiveChannelQuery);
     return result.data.activeChannel;
 }

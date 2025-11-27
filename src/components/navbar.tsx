@@ -4,6 +4,8 @@ import {NavbarCart} from '@/components/navbar/navbar-cart';
 import {NavbarUser} from '@/components/navbar/navbar-user';
 import {Suspense} from "react";
 import {SearchInput} from '@/components/search-input';
+import {NavbarUserSkeleton} from '@/components/skeletons/navbar-user-skeleton';
+import {SearchInputSkeleton} from '@/components/skeletons/search-input-skeleton';
 
 export function Navbar() {
     return (
@@ -13,17 +15,21 @@ export function Navbar() {
                     <div className="flex items-center gap-8">
                         <NavbarLogo/>
                         <nav className="hidden md:flex items-center gap-6">
-                            <NavbarCollections/>
+                            <Suspense>
+                                <NavbarCollections/>
+                            </Suspense>
                         </nav>
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="hidden lg:flex">
-                            <Suspense>
+                            <Suspense fallback={<SearchInputSkeleton />}>
                                 <SearchInput/>
                             </Suspense>
                         </div>
-                        <NavbarCart/>
                         <Suspense>
+                            <NavbarCart/>
+                        </Suspense>
+                        <Suspense fallback={<NavbarUserSkeleton />}>
                             <NavbarUser/>
                         </Suspense>
                     </div>

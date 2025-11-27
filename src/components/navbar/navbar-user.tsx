@@ -18,7 +18,7 @@ export async function NavbarUser() {
     if (!customer) {
         return (
             <Button variant="ghost" asChild>
-                <LoginButton/>
+                <LoginButton isLoggedIn={false}/>
             </Button>
         );
     }
@@ -40,7 +40,7 @@ export async function NavbarUser() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem asChild>
-                    <LoginButton/>
+                    <LoginButton isLoggedIn={true}/>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
