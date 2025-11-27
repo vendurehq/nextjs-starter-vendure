@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { use, useActionState } from 'react';
 import { resetPasswordAction } from './actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,10 +9,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Link from 'next/link';
 
 interface ResetPasswordFormProps {
-    token: string | null;
+    searchParams: Promise<{ token?: string }>;
 }
 
-export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
+export function ResetPasswordForm({ searchParams }: ResetPasswordFormProps) {
+    const params = use(searchParams);
+    const token = params.token || null;
+
     const [state, formAction, isPending] = useActionState(resetPasswordAction, undefined);
 
     if (!token) {
