@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useTransition} from 'react';
+import {useState, useEffect, useTransition} from 'react';
 import {useRouter, useSearchParams} from 'next/navigation';
 import {Search} from 'lucide-react';
 import {Input} from '@/components/ui/input';
@@ -10,6 +10,10 @@ export function SearchInput() {
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
     const [searchValue, setSearchValue] = useState(searchParams.get('q') || '');
+
+    useEffect(() => {
+        setSearchValue(searchParams.get('q') || '');
+    }, [searchParams]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
