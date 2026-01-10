@@ -8,7 +8,7 @@ import {RadioGroup, RadioGroupItem} from '@/components/ui/radio-group';
 import {ShoppingCart, CheckCircle2} from 'lucide-react';
 import {addToCart} from '@/app/product/[slug]/actions';
 import {toast} from 'sonner';
-import {Price} from '@/components/commerce/price';
+import {Price} from '@core/components/commerce/price';
 
 interface ProductInfoProps {
     product: {

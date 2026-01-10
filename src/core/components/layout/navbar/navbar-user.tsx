@@ -8,7 +8,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Link from "next/link";
-import {LoginButton} from "@/components/layout/navbar/login-button";
+import {LoginButton} from "@core/components/layout/navbar/login-button";
 import {getActiveCustomer} from "@/lib/vendure/actions";
 
 

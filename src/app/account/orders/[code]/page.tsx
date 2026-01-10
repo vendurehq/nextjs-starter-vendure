@@ -9,8 +9,8 @@ import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
 import {getActiveCustomer} from "@/lib/vendure/actions";
 import {notFound, redirect} from "next/navigation";
-import {Price} from '@/components/commerce/price';
-import {OrderStatusBadge} from '@/components/commerce/order-status-badge';
+import {Price} from '@core/components/commerce/price';
+import {OrderStatusBadge} from '@core/components/commerce/order-status-badge';
 import {formatDate} from '@/lib/format';
 import Link from "next/link";
 

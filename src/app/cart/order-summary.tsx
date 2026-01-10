@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
-import {Price} from '@/components/commerce/price';
+import {Price} from '@core/components/commerce/price';
 
 type ActiveOrder = {
     id: string;

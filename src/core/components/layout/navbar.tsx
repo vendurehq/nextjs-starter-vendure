@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import {NavbarCollections} from '@/components/layout/navbar/navbar-collections';
-import {NavbarCart} from '@/components/layout/navbar/navbar-cart';
-import {NavbarUser} from '@/components/layout/navbar/navbar-user';
-import {ThemeSwitcher} from '@/components/layout/navbar/theme-switcher';
+import {NavbarCollections} from '@core/components/layout/navbar/navbar-collections';
+import {NavbarCart} from '@core/components/layout/navbar/navbar-cart';
+import {NavbarUser} from '@core/components/layout/navbar/navbar-user';
+import {ThemeSwitcher} from '@core/components/layout/navbar/theme-switcher';
 import {Suspense} from "react";
-import {SearchInput} from '@/components/layout/search-input';
+import {SearchInput} from '@core/components/layout/search-input';
 import {NavbarUserSkeleton} from '@/components/shared/skeletons/navbar-user-skeleton';
 import {SearchInputSkeleton} from '@/components/shared/skeletons/search-input-skeleton';
 

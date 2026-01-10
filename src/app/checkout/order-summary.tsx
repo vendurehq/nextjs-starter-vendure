@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { OrderLine } from './types';
 import { useCheckout } from './checkout-provider';
-import { Price } from '@/components/commerce/price';
+import { Price } from '@core/components/commerce/price';
 
 export default function OrderSummary() {
   const { order } = useCheckout();

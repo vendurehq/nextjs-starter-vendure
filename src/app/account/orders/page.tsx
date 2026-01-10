@@ -17,8 +17,8 @@ import {
 } from '@/components/ui/pagination';
 import {ArrowRightIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {Price} from '@/components/commerce/price';
-import {OrderStatusBadge} from '@/components/commerce/order-status-badge';
+import {Price} from '@core/components/commerce/price';
+import {OrderStatusBadge} from '@core/components/commerce/order-status-badge';
 import {formatDate} from '@/lib/format';
 import Link from "next/link";
 import {redirect} from "next/navigation";

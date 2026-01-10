@@ -1,4 +1,4 @@
-import {ProductCarousel} from "@/components/commerce/product-carousel";
+import {ProductCarousel} from "@core/components/commerce/product-carousel";
 import {cacheLife} from "next/cache";
 import {query} from "@/lib/vendure/api";
 import {GetCollectionProductsQuery} from "@/lib/vendure/queries";

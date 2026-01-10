@@ -7,7 +7,7 @@ import {CheckCircle2} from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {Separator} from '@/components/ui/separator';
-import {Price} from '@/components/commerce/price';
+import {Price} from '@core/components/commerce/price';
 import {notFound} from "next/navigation";
 
 const GetOrderByCodeQuery = graphql(`

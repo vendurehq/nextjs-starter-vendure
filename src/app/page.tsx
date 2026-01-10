@@ -1,6 +1,6 @@
 import type {Metadata} from "next";
-import {HeroSection} from "@/components/layout/hero-section";
-import {FeaturedProducts} from "@/components/commerce/featured-products";
+import {HeroSection} from "@core/components/layout/hero-section";
+import {FeaturedProducts} from "@core/components/commerce/featured-products";
 import {SITE_NAME, SITE_URL, buildCanonicalUrl} from "@/lib/metadata";
 
 export const metadata: Metadata = {

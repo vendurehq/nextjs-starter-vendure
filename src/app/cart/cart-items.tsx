@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
 import {Minus, Plus, X} from 'lucide-react';
-import {Price} from '@/components/commerce/price';
+import {Price} from '@core/components/commerce/price';
 import {removeFromCart, adjustQuantity} from './actions';
 
 type ActiveOrder = {
