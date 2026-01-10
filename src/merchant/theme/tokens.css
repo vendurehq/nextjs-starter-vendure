@@ -1,0 +1,13 @@
+/* Merchant Theme Token Overrides
+ *
+ * Override core design tokens here.
+ *
+ * Example:
+ * :root {
+ *   --primary: oklch(0.65 0.2 145);
+ * }
+ *
+ * .dark {
+ *   --primary: oklch(0.75 0.18 145);
+ * }
+ */

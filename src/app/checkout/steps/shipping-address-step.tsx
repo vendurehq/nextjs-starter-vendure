@@ -14,7 +14,7 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCheckout } from '../checkout-provider';
 import { setShippingAddress, createCustomerAddress } from '../actions';
-import { CountrySelect } from '@/components/shared/country-select';
+import { ClientComponents } from '@config/components.client.registry';
 
 interface ShippingAddressStepProps {
   onComplete: () => void;
@@ -245,7 +245,7 @@ export default function ShippingAddressStep({ onComplete }: ShippingAddressStepP
                           control={control}
                           rules={{ required: 'Country is required' }}
                           render={({ field }) => (
-                            <CountrySelect
+                            <ClientComponents.CountrySelect
                               countries={countries}
                               value={field.value}
                               onValueChange={field.onChange}
@@ -359,7 +359,7 @@ export default function ShippingAddressStep({ onComplete }: ShippingAddressStepP
                       control={control}
                       rules={{ required: 'Country is required' }}
                       render={({ field }) => (
-                        <CountrySelect
+                        <ClientComponents.CountrySelect
                           countries={countries}
                           value={field.value}
                           onValueChange={field.onChange}

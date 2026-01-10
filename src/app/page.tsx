@@ -1,6 +1,5 @@
 import type {Metadata} from "next";
-import {HeroSection} from "@/components/layout/hero-section";
-import {FeaturedProducts} from "@/components/commerce/featured-products";
+import {ServerComponents} from "@config/components.server.registry";
 import {SITE_NAME, SITE_URL, buildCanonicalUrl} from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -24,8 +23,8 @@ export const metadata: Metadata = {
 export default async function Home(_props: PageProps<'/'>) {
     return (
         <div className="min-h-screen">
-            <HeroSection/>
-            <FeaturedProducts/>
+            <ServerComponents.HeroSection/>
+            <ServerComponents.FeaturedProducts/>
 
             {/* You can add more sections here */}
             <section className="py-16 bg-muted/30">

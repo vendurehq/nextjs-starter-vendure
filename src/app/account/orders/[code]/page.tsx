@@ -1,17 +1,16 @@
 import type {Metadata} from 'next';
 import {ChevronLeft} from 'lucide-react';
-import {query} from '@/lib/vendure/api';
-import {GetOrderDetailQuery} from '@/lib/vendure/queries';
+import {query} from '@core/lib/vendure/api';
+import {GetOrderDetailQuery} from '@core/lib/vendure/queries';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
-import {getActiveCustomer} from "@/lib/vendure/actions";
+import {getActiveCustomer} from "@core/lib/vendure/actions";
 import {notFound, redirect} from "next/navigation";
-import {Price} from '@/components/commerce/price';
-import {OrderStatusBadge} from '@/components/commerce/order-status-badge';
-import {formatDate} from '@/lib/format';
+import {ClientComponents} from '@config/components.client.registry';
+import {formatDate} from '@core/lib/format';
 import Link from "next/link";
 
 type OrderDetailPageProps = PageProps<'/account/orders/[code]'>;
@@ -60,7 +59,7 @@ export default async function OrderDetailPage(props: PageProps<'/account/orders/
                             Placed on {formatDate(order.createdAt, 'long')}
                         </p>
                     </div>
-                    <OrderStatusBadge state={order.state}/>
+                    <ClientComponents.OrderStatusBadge state={order.state}/>
                 </div>
             </div>
 
@@ -103,10 +102,10 @@ export default async function OrderDetailPage(props: PageProps<'/account/orders/
                                         </div>
                                         <div className="text-right">
                                             <p className="font-medium">
-                                                <Price value={line.linePriceWithTax} currencyCode={order.currencyCode}/>
+                                                <ClientComponents.Price value={line.linePriceWithTax} currencyCode={order.currencyCode}/>
                                             </p>
                                             <p className="text-sm text-muted-foreground">
-                                                Qty: {line.quantity} × <Price value={line.unitPriceWithTax}
+                                                Qty: {line.quantity} × <ClientComponents.Price value={line.unitPriceWithTax}
                                                                               currencyCode={order.currencyCode}/>
                                             </p>
                                         </div>
@@ -125,12 +124,12 @@ export default async function OrderDetailPage(props: PageProps<'/account/orders/
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Subtotal</span>
-                                    <span><Price value={order.subTotalWithTax}
+                                    <span><ClientComponents.Price value={order.subTotalWithTax}
                                                  currencyCode={order.currencyCode}/></span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Shipping</span>
-                                    <span><Price value={order.shippingWithTax}
+                                    <span><ClientComponents.Price value={order.shippingWithTax}
                                                  currencyCode={order.currencyCode}/></span>
                                 </div>
                                 {order.discounts.length > 0 && (
@@ -141,7 +140,7 @@ export default async function OrderDetailPage(props: PageProps<'/account/orders/
                                                     {discount.description}
                                                 </span>
                                                 <span className="text-green-600">
-                                                    -<Price value={discount.amountWithTax}
+                                                    -<ClientComponents.Price value={discount.amountWithTax}
                                                             currencyCode={order.currencyCode}/>
                                                 </span>
                                             </div>
@@ -151,7 +150,7 @@ export default async function OrderDetailPage(props: PageProps<'/account/orders/
                                 <Separator className="my-2"/>
                                 <div className="flex justify-between font-bold text-lg">
                                     <span>Total</span>
-                                    <span><Price value={order.totalWithTax} currencyCode={order.currencyCode}/></span>
+                                    <span><ClientComponents.Price value={order.totalWithTax} currencyCode={order.currencyCode}/></span>
                                 </div>
                             </div>
                         </CardContent>
@@ -229,7 +228,7 @@ export default async function OrderDetailPage(props: PageProps<'/account/orders/
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Amount</span>
-                                            <span><Price value={payment.amount}
+                                            <span><ClientComponents.Price value={payment.amount}
                                                          currencyCode={order.currencyCode}/></span>
                                         </div>
                                         <div className="flex justify-between">
@@ -268,7 +267,7 @@ export default async function OrderDetailPage(props: PageProps<'/account/orders/
                                             </p>
                                         )}
                                         <p className="font-medium">
-                                            <Price value={line.priceWithTax} currencyCode={order.currencyCode}/>
+                                            <ClientComponents.Price value={line.priceWithTax} currencyCode={order.currencyCode}/>
                                         </p>
                                     </div>
                                 ))}

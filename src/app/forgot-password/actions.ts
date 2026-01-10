@@ -1,7 +1,7 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
-import {RequestPasswordResetMutation} from '@/lib/vendure/mutations';
+import {mutate} from '@core/lib/vendure/api';
+import {RequestPasswordResetMutation} from '@core/lib/vendure/mutations';
 
 export async function requestPasswordResetAction(prevState: { error?: string; success?: boolean } | undefined, formData: FormData) {
     const emailAddress = formData.get('emailAddress') as string;

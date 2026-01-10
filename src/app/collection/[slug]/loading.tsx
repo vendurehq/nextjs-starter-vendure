@@ -1,4 +1,4 @@
-import { ProductGridSkeleton } from '@/components/shared/product-grid-skeleton';
+import { ServerComponents } from '@config/components.server.registry';
 
 export default function CollectionLoading() {
     return (
@@ -11,7 +11,7 @@ export default function CollectionLoading() {
 
                 {/* Product Grid Skeleton */}
                 <div className="lg:col-span-3">
-                    <ProductGridSkeleton />
+                    <ServerComponents.ProductGridSkeleton />
                 </div>
             </div>
         </div>

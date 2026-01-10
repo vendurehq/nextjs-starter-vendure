@@ -1,10 +1,9 @@
 import {Suspense} from "react";
-import {FacetFilters} from "@/components/commerce/facet-filters";
-import {ProductGridSkeleton} from "@/components/shared/product-grid-skeleton";
-import {ProductGrid} from "@/components/commerce/product-grid";
+import {ServerComponents} from "@config/components.server.registry";
+import {ClientComponents} from "@config/components.client.registry";
 import {buildSearchInput, getCurrentPage} from "@/lib/search-helpers";
-import {query} from "@/lib/vendure/api";
-import {SearchProductsQuery} from "@/lib/vendure/queries";
+import {query} from "@core/lib/vendure/api";
+import {SearchProductsQuery} from "@core/lib/vendure/queries";
 
 interface SearchResultsProps {
     searchParams: Promise<{
@@ -26,14 +25,14 @@ export async function SearchResults({searchParams}: SearchResultsProps) {
             {/* Filters Sidebar */}
             <aside className="lg:col-span-1">
                 <Suspense fallback={<div className="h-64 animate-pulse bg-muted rounded-lg"/>}>
-                    <FacetFilters productDataPromise={productDataPromise}/>
+                    <ClientComponents.FacetFilters productDataPromise={productDataPromise}/>
                 </Suspense>
             </aside>
 
             {/* Product Grid */}
             <div className="lg:col-span-3">
-                <Suspense fallback={<ProductGridSkeleton/>}>
-                    <ProductGrid productDataPromise={productDataPromise} currentPage={page} take={12}/>
+                <Suspense fallback={<ServerComponents.ProductGridSkeleton/>}>
+                    <ServerComponents.ProductGrid productDataPromise={productDataPromise} currentPage={page} take={12}/>
                 </Suspense>
             </div>
         </div>

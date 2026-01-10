@@ -30,6 +30,15 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@core/*": [
+        "./src/core/*"
+      ],
+      "@merchant/*": [
+        "./src/merchant/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
       ]
     }
   },

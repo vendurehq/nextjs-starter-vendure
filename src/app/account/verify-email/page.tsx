@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
-import { mutate } from '@/lib/vendure/api';
-import { UpdateCustomerEmailAddressMutation } from '@/lib/vendure/mutations';
+import { mutate } from '@core/lib/vendure/api';
+import { UpdateCustomerEmailAddressMutation } from '@core/lib/vendure/mutations';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';

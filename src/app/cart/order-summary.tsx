@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
-import {Price} from '@/components/commerce/price';
+import {ClientComponents} from '@config/components.client.registry';
 
 type ActiveOrder = {
     id: string;
@@ -23,7 +23,7 @@ export async function OrderSummary({activeOrder}: { activeOrder: ActiveOrder }) 
                 <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>
-                        <Price value={activeOrder.subTotalWithTax} currencyCode={activeOrder.currencyCode}/>
+                        <ClientComponents.Price value={activeOrder.subTotalWithTax} currencyCode={activeOrder.currencyCode}/>
                     </span>
                 </div>
                 {activeOrder.discounts && activeOrder.discounts.length > 0 && (
@@ -32,7 +32,7 @@ export async function OrderSummary({activeOrder}: { activeOrder: ActiveOrder }) 
                             <div key={index} className="flex justify-between text-sm text-green-600">
                                 <span>{discount.description}</span>
                                 <span>
-                                    <Price value={discount.amountWithTax} currencyCode={activeOrder.currencyCode}/>
+                                    <ClientComponents.Price value={discount.amountWithTax} currencyCode={activeOrder.currencyCode}/>
                                 </span>
                             </div>
                         ))}
@@ -42,7 +42,7 @@ export async function OrderSummary({activeOrder}: { activeOrder: ActiveOrder }) 
                     <span className="text-muted-foreground">Shipping</span>
                     <span>
                         {activeOrder.shippingWithTax > 0
-                            ? <Price value={activeOrder.shippingWithTax} currencyCode={activeOrder.currencyCode}/>
+                            ? <ClientComponents.Price value={activeOrder.shippingWithTax} currencyCode={activeOrder.currencyCode}/>
                             : 'Calculated at checkout'}
                     </span>
                 </div>
@@ -52,7 +52,7 @@ export async function OrderSummary({activeOrder}: { activeOrder: ActiveOrder }) 
                 <div className="flex justify-between font-bold text-lg">
                     <span>Total</span>
                     <span>
-                        <Price value={activeOrder.totalWithTax} currencyCode={activeOrder.currencyCode}/>
+                        <ClientComponents.Price value={activeOrder.totalWithTax} currencyCode={activeOrder.currencyCode}/>
                     </span>
                 </div>
             </div>

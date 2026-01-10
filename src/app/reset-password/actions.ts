@@ -1,7 +1,7 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
-import {ResetPasswordMutation} from '@/lib/vendure/mutations';
+import {mutate} from '@core/lib/vendure/api';
+import {ResetPasswordMutation} from '@core/lib/vendure/mutations';
 import {setAuthToken} from '@/lib/auth';
 import {redirect} from 'next/navigation';
 

@@ -1,10 +1,10 @@
 import type {Metadata} from 'next';
-import {query} from '@/lib/vendure/api';
+import {query} from '@core/lib/vendure/api';
 
 export const metadata: Metadata = {
     title: 'My Orders',
 };
-import {GetCustomerOrdersQuery} from '@/lib/vendure/queries';
+import {GetCustomerOrdersQuery} from '@core/lib/vendure/queries';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@/components/ui/table';
 import {
     Pagination,
@@ -17,9 +17,8 @@ import {
 } from '@/components/ui/pagination';
 import {ArrowRightIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {Price} from '@/components/commerce/price';
-import {OrderStatusBadge} from '@/components/commerce/order-status-badge';
-import {formatDate} from '@/lib/format';
+import {ClientComponents} from '@config/components.client.registry';
+import {formatDate} from '@core/lib/format';
 import Link from "next/link";
 import {redirect} from "next/navigation";
 
@@ -92,14 +91,14 @@ export default async function OrdersPage(props: PageProps<'/account/orders'>) {
                                             {formatDate(order.createdAt)}
                                         </TableCell>
                                         <TableCell>
-                                            <OrderStatusBadge state={order.state}/>
+                                            <ClientComponents.OrderStatusBadge state={order.state}/>
                                         </TableCell>
                                         <TableCell>
                                             {order.lines.length}{' '}
                                             {order.lines.length === 1 ? 'item' : 'items'}
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <Price value={order.totalWithTax} currencyCode={order.currencyCode}/>
+                                            <ClientComponents.Price value={order.totalWithTax} currencyCode={order.currencyCode}/>
                                         </TableCell>
                                     </TableRow>
                                 ))}

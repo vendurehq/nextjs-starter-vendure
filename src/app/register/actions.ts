@@ -1,7 +1,7 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
-import {RegisterCustomerAccountMutation} from '@/lib/vendure/mutations';
+import {mutate} from '@core/lib/vendure/api';
+import {RegisterCustomerAccountMutation} from '@core/lib/vendure/mutations';
 import {redirect} from 'next/navigation';
 
 export async function registerAction(prevState: { error?: string } | undefined, formData: FormData) {

@@ -1,8 +1,8 @@
 import {CartItems} from "@/app/cart/cart-items";
 import {OrderSummary} from "@/app/cart/order-summary";
 import {PromotionCode} from "@/app/cart/promotion-code";
-import {query} from "@/lib/vendure/api";
-import {GetActiveOrderQuery} from "@/lib/vendure/queries";
+import {query} from "@core/lib/vendure/api";
+import {GetActiveOrderQuery} from "@core/lib/vendure/queries";
 
 export async function Cart() {
     "use cache: private"

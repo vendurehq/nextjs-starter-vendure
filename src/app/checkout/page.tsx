@@ -1,17 +1,17 @@
 import type {Metadata} from 'next';
-import {query} from '@/lib/vendure/api';
+import {query} from '@core/lib/vendure/api';
 import {
     GetActiveOrderForCheckoutQuery,
     GetCustomerAddressesQuery,
     GetEligiblePaymentMethodsQuery,
     GetEligibleShippingMethodsQuery,
-} from '@/lib/vendure/queries';
+} from '@core/lib/vendure/queries';
 import {redirect} from 'next/navigation';
 import CheckoutFlow from './checkout-flow';
 import {CheckoutProvider} from './checkout-provider';
 import {noIndexRobots} from '@/lib/metadata';
-import {getActiveCustomer} from '@/lib/vendure/actions';
-import {getAvailableCountriesCached} from '@/lib/vendure/cached';
+import {getActiveCustomer} from '@core/lib/vendure/actions';
+import {getAvailableCountriesCached} from '@core/lib/vendure/cached';
 
 export const metadata: Metadata = {
     title: 'Checkout',

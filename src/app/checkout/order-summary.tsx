@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { OrderLine } from './types';
 import { useCheckout } from './checkout-provider';
-import { Price } from '@/components/commerce/price';
+import { ClientComponents } from '@config/components.client.registry';
 
 export default function OrderSummary() {
   const { order } = useCheckout();
@@ -43,7 +43,7 @@ export default function OrderSummary() {
                 </p>
               </div>
               <div className="text-sm font-medium">
-                <Price value={line.linePriceWithTax} currencyCode={order.currencyCode} />
+                <ClientComponents.Price value={line.linePriceWithTax} currencyCode={order.currencyCode} />
               </div>
             </div>
           ))}
@@ -55,7 +55,7 @@ export default function OrderSummary() {
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Subtotal</span>
             <span>
-              <Price value={order.subTotalWithTax} currencyCode={order.currencyCode} />
+              <ClientComponents.Price value={order.subTotalWithTax} currencyCode={order.currencyCode} />
             </span>
           </div>
 
@@ -65,7 +65,7 @@ export default function OrderSummary() {
                 <div key={index} className="flex justify-between text-sm text-green-600">
                   <span>{discount.description}</span>
                   <span>
-                    <Price value={discount.amountWithTax} currencyCode={order.currencyCode} />
+                    <ClientComponents.Price value={discount.amountWithTax} currencyCode={order.currencyCode} />
                   </span>
                 </div>
               ))}
@@ -76,7 +76,7 @@ export default function OrderSummary() {
             <span className="text-muted-foreground">Shipping</span>
             <span>
               {order.shippingWithTax > 0
-                ? <Price value={order.shippingWithTax} currencyCode={order.currencyCode} />
+                ? <ClientComponents.Price value={order.shippingWithTax} currencyCode={order.currencyCode} />
                 : 'To be calculated'}
             </span>
           </div>
@@ -87,7 +87,7 @@ export default function OrderSummary() {
         <div className="flex justify-between font-bold text-lg">
           <span>Total</span>
           <span>
-            <Price value={order.totalWithTax} currencyCode={order.currencyCode} />
+            <ClientComponents.Price value={order.totalWithTax} currencyCode={order.currencyCode} />
           </span>
         </div>
       </CardContent>

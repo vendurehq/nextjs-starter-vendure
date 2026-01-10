@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2, MapPin, Truck, CreditCard, Edit } from 'lucide-react';
 import { useCheckout } from '../checkout-provider';
 import { placeOrder as placeOrderAction } from '../actions';
-import { Price } from '@/components/commerce/price';
+import { ClientComponents } from '@config/components.client.registry';
 
 interface ReviewStepProps {
   onEditStep: (step: 'shipping' | 'delivery' | 'payment') => void;
@@ -88,7 +88,7 @@ export default function ReviewStep({ onEditStep }: ReviewStepProps) {
                 <p className="text-muted-foreground">
                   {order.shippingLines[0].priceWithTax === 0
                     ? 'FREE'
-                    : <Price value={order.shippingLines[0].priceWithTax} currencyCode={order.currencyCode} />}
+                    : <ClientComponents.Price value={order.shippingLines[0].priceWithTax} currencyCode={order.currencyCode} />}
                 </p>
               </div>
               <Button

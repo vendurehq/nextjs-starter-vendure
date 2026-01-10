@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Field, FieldLabel, FieldError, FieldGroup } from '@/components/ui/field';
 import { useForm, Controller } from 'react-hook-form';
 import { Loader2 } from 'lucide-react';
-import { CountrySelect } from '@/components/shared/country-select';
+import { ClientComponents } from '@config/components.client.registry';
 
 interface Country {
   id: string;
@@ -140,7 +140,7 @@ export function AddressForm({ countries, address, onSubmit, onCancel, isSubmitti
               control={control}
               rules={{ required: 'Country is required' }}
               render={({ field }) => (
-                <CountrySelect
+                <ClientComponents.CountrySelect
                   countries={countries}
                   value={field.value}
                   onValueChange={field.onChange}

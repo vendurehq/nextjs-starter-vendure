@@ -1,7 +1,7 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
-import {LoginMutation, LogoutMutation} from '@/lib/vendure/mutations';
+import {mutate} from '@core/lib/vendure/api';
+import {LoginMutation, LogoutMutation} from '@core/lib/vendure/mutations';
 import {removeAuthToken, setAuthToken} from '@/lib/auth';
 import {redirect} from "next/navigation";
 import {revalidatePath} from "next/cache";

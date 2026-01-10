@@ -1,5 +1,5 @@
 import {connection} from 'next/server';
-import {query} from '@/lib/vendure/api';
+import {query} from '@core/lib/vendure/api';
 import {graphql} from '@/graphql';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
@@ -7,7 +7,7 @@ import {CheckCircle2} from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {Separator} from '@/components/ui/separator';
-import {Price} from '@/components/commerce/price';
+import {ClientComponents} from '@config/components.client.registry';
 import {notFound} from "next/navigation";
 
 const GetOrderByCodeQuery = graphql(`
@@ -109,7 +109,7 @@ export async function OrderConfirmation({params}: PageProps<'/order-confirmation
                                 </div>
                                 <div className="text-right w-24">
                                     <p className="font-semibold">
-                                        <Price value={line.linePriceWithTax} currencyCode={order.currencyCode}/>
+                                        <ClientComponents.Price value={line.linePriceWithTax} currencyCode={order.currencyCode}/>
                                     </p>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@ export async function OrderConfirmation({params}: PageProps<'/order-confirmation
                         <div className="flex justify-between font-bold text-lg">
                             <span>Total</span>
                             <span>
-                <Price value={order.totalWithTax} currencyCode={order.currencyCode}/>
+                <ClientComponents.Price value={order.totalWithTax} currencyCode={order.currencyCode}/>
               </span>
                         </div>
                     </CardContent>

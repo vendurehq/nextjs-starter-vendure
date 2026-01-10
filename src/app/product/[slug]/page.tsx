@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import { query } from '@/lib/vendure/api';
-import { GetProductDetailQuery } from '@/lib/vendure/queries';
-import { ProductImageCarousel } from '@/components/commerce/product-image-carousel';
-import { ProductInfo } from '@/components/commerce/product-info';
-import { RelatedProducts } from '@/components/commerce/related-products';
+import { query } from '@core/lib/vendure/api';
+import { GetProductDetailQuery } from '@core/lib/vendure/queries';
+import { ClientComponents } from '@config/components.client.registry';
+import { ServerComponents } from '@config/components.server.registry';
 import {
     Accordion,
     AccordionContent,
@@ -86,12 +85,12 @@ export default async function ProductDetailPage({params, searchParams}: PageProp
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                     {/* Left Column: Image Carousel */}
                     <div className="lg:sticky lg:top-20 lg:self-start">
-                        <ProductImageCarousel images={product.assets} />
+                        <ClientComponents.ProductImageCarousel images={product.assets} />
                     </div>
 
                     {/* Right Column: Product Info */}
                     <div>
-                        <ProductInfo product={product} searchParams={searchParamsResolved} />
+                        <ClientComponents.ProductInfo product={product} searchParams={searchParamsResolved} />
                     </div>
                 </div>
             </div>
@@ -166,7 +165,7 @@ export default async function ProductDetailPage({params, searchParams}: PageProp
             </section>
 
             {primaryCollection && (
-                <RelatedProducts
+                <ServerComponents.RelatedProducts
                     collectionSlug={primaryCollection.slug}
                     currentProductId={product.id}
                 />
