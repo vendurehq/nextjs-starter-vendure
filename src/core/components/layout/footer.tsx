@@ -1,5 +1,5 @@
 import {cacheLife} from 'next/cache';
-import {getTopCollections} from '@/lib/vendure/cached';
+import {getTopCollections} from '@core/lib/vendure/cached';
 import Image from "next/image";
 import Link from "next/link";
 

@@ -1,7 +1,7 @@
 'use server';
 
-import { mutate } from '@/lib/vendure/api';
-import { AddToCartMutation } from '@/lib/vendure/mutations';
+import { mutate } from '@core/lib/vendure/api';
+import { AddToCartMutation } from '@core/lib/vendure/mutations';
 import { updateTag } from 'next/cache';
 import { setAuthToken } from '@/lib/auth';
 

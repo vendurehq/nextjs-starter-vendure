@@ -1,11 +1,11 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
+import {mutate} from '@core/lib/vendure/api';
 import {
     CreateCustomerAddressMutation,
     UpdateCustomerAddressMutation,
     DeleteCustomerAddressMutation,
-} from '@/lib/vendure/mutations';
+} from '@core/lib/vendure/mutations';
 import {revalidatePath} from 'next/cache';
 
 interface AddressInput {

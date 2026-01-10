@@ -6,8 +6,8 @@ import {NavbarUser} from '@core/components/layout/navbar/navbar-user';
 import {ThemeSwitcher} from '@core/components/layout/navbar/theme-switcher';
 import {Suspense} from "react";
 import {SearchInput} from '@core/components/layout/search-input';
-import {NavbarUserSkeleton} from '@/components/shared/skeletons/navbar-user-skeleton';
-import {SearchInputSkeleton} from '@/components/shared/skeletons/search-input-skeleton';
+import {NavbarUserSkeleton} from '@core/components/shared/skeletons/navbar-user-skeleton';
+import {SearchInputSkeleton} from '@core/components/shared/skeletons/search-input-skeleton';
 
 export function Navbar() {
     return (

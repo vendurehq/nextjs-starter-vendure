@@ -14,7 +14,7 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCheckout } from '../checkout-provider';
 import { setShippingAddress, createCustomerAddress } from '../actions';
-import { CountrySelect } from '@/components/shared/country-select';
+import { CountrySelect } from '@core/components/shared/country-select';
 
 interface ShippingAddressStepProps {
   onComplete: () => void;

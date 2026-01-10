@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { query } from '@/lib/vendure/api';
-import { GetProductDetailQuery } from '@/lib/vendure/queries';
+import { query } from '@core/lib/vendure/api';
+import { GetProductDetailQuery } from '@core/lib/vendure/queries';
 import { ProductImageCarousel } from '@core/components/commerce/product-image-carousel';
 import { ProductInfo } from '@core/components/commerce/product-info';
 import { RelatedProducts } from '@core/components/commerce/related-products';

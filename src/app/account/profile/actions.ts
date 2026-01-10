@@ -1,11 +1,11 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
+import {mutate} from '@core/lib/vendure/api';
 import {
     UpdateCustomerPasswordMutation,
     UpdateCustomerMutation,
     RequestUpdateCustomerEmailAddressMutation,
-} from '@/lib/vendure/mutations';
+} from '@core/lib/vendure/mutations';
 import {revalidatePath} from 'next/cache';
 
 export async function updatePasswordAction(prevState: { error?: string; success?: boolean } | undefined, formData: FormData) {

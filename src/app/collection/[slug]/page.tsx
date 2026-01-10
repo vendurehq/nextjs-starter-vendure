@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { query } from '@/lib/vendure/api';
-import { SearchProductsQuery, GetCollectionProductsQuery } from '@/lib/vendure/queries';
+import { query } from '@core/lib/vendure/api';
+import { SearchProductsQuery, GetCollectionProductsQuery } from '@core/lib/vendure/queries';
 import { ProductGrid } from '@core/components/commerce/product-grid';
 import { FacetFilters } from '@core/components/commerce/facet-filters';
-import { ProductGridSkeleton } from '@/components/shared/product-grid-skeleton';
+import { ProductGridSkeleton } from '@core/components/shared/product-grid-skeleton';
 import { buildSearchInput, getCurrentPage } from '@/lib/search-helpers';
 import { cacheLife, cacheTag } from 'next/cache';
 import {

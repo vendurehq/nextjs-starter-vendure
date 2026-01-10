@@ -1,12 +1,12 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
+import {mutate} from '@core/lib/vendure/api';
 import {
     RemoveFromCartMutation,
     AdjustCartItemMutation,
     ApplyPromotionCodeMutation,
     RemovePromotionCodeMutation
-} from '@/lib/vendure/mutations';
+} from '@core/lib/vendure/mutations';
 import {updateTag} from 'next/cache';
 
 export async function removeFromCart(lineId: string) {

@@ -1,17 +1,17 @@
 import type {Metadata} from 'next';
 import {ChevronLeft} from 'lucide-react';
-import {query} from '@/lib/vendure/api';
-import {GetOrderDetailQuery} from '@/lib/vendure/queries';
+import {query} from '@core/lib/vendure/api';
+import {GetOrderDetailQuery} from '@core/lib/vendure/queries';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
-import {getActiveCustomer} from "@/lib/vendure/actions";
+import {getActiveCustomer} from "@core/lib/vendure/actions";
 import {notFound, redirect} from "next/navigation";
 import {Price} from '@core/components/commerce/price';
 import {OrderStatusBadge} from '@core/components/commerce/order-status-badge';
-import {formatDate} from '@/lib/format';
+import {formatDate} from '@core/lib/format';
 import Link from "next/link";
 
 type OrderDetailPageProps = PageProps<'/account/orders/[code]'>;

@@ -1,5 +1,5 @@
 import {connection} from 'next/server';
-import {query} from '@/lib/vendure/api';
+import {query} from '@core/lib/vendure/api';
 import {graphql} from '@/graphql';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';

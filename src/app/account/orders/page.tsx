@@ -1,10 +1,10 @@
 import type {Metadata} from 'next';
-import {query} from '@/lib/vendure/api';
+import {query} from '@core/lib/vendure/api';
 
 export const metadata: Metadata = {
     title: 'My Orders',
 };
-import {GetCustomerOrdersQuery} from '@/lib/vendure/queries';
+import {GetCustomerOrdersQuery} from '@core/lib/vendure/queries';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@/components/ui/table';
 import {
     Pagination,
@@ -19,7 +19,7 @@ import {ArrowRightIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Price} from '@core/components/commerce/price';
 import {OrderStatusBadge} from '@core/components/commerce/order-status-badge';
-import {formatDate} from '@/lib/format';
+import {formatDate} from '@core/lib/format';
 import Link from "next/link";
 import {redirect} from "next/navigation";
 

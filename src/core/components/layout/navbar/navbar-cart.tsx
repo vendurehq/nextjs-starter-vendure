@@ -1,7 +1,7 @@
 import {cacheLife, cacheTag} from 'next/cache';
 import {CartIcon} from './cart-icon';
-import {query} from '@/lib/vendure/api';
-import {GetActiveOrderQuery} from '@/lib/vendure/queries';
+import {query} from '@core/lib/vendure/api';
+import {GetActiveOrderQuery} from '@core/lib/vendure/queries';
 
 export async function NavbarCart() {
     'use cache: private';

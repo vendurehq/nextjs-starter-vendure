@@ -6,7 +6,7 @@ import { ResultOf } from '@/graphql';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import {SearchProductsQuery} from "@/lib/vendure/queries";
+import {SearchProductsQuery} from "@core/lib/vendure/queries";
 
 interface FacetFiltersProps {
     productDataPromise: Promise<{

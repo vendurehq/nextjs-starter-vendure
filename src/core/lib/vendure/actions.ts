@@ -3,7 +3,7 @@ import {GetActiveCustomerQuery} from './queries';
 import {getActiveChannelCached} from './cached';
 import {cache} from "react";
 import {readFragment} from "@/graphql";
-import {ActiveCustomerFragment} from "@/lib/vendure/fragments";
+import {ActiveCustomerFragment} from "./fragments";
 import {getAuthToken} from "@/lib/auth";
 
 

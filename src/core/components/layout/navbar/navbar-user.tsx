@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from "next/link";
 import {LoginButton} from "@core/components/layout/navbar/login-button";
-import {getActiveCustomer} from "@/lib/vendure/actions";
+import {getActiveCustomer} from "@core/lib/vendure/actions";
 
 
 export async function NavbarUser() {

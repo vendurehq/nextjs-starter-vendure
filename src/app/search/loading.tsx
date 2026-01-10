@@ -1,5 +1,5 @@
 import { SearchTermSkeleton } from '@/app/search/search-term';
-import { SearchResultsSkeleton } from '@/components/shared/skeletons/search-results-skeleton';
+import { SearchResultsSkeleton } from '@core/components/shared/skeletons/search-results-skeleton';
 
 export default function SearchLoading() {
     return (

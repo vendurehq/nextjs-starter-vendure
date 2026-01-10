@@ -2,7 +2,7 @@
 
 import {createContext, ReactNode, useContext} from 'react';
 import {ResultOf} from '@/graphql';
-import {ActiveCustomerFragment} from '@/lib/vendure/fragments';
+import {ActiveCustomerFragment} from '@core/lib/vendure/fragments';
 
 type ActiveCustomer = ResultOf<typeof ActiveCustomerFragment>;
 

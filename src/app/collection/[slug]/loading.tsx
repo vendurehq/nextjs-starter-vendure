@@ -1,4 +1,4 @@
-import { ProductGridSkeleton } from '@/components/shared/product-grid-skeleton';
+import { ProductGridSkeleton } from '@core/components/shared/product-grid-skeleton';
 
 export default function CollectionLoading() {
     return (

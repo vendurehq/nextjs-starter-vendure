@@ -1,9 +1,9 @@
 import {ResultOf} from '@/graphql';
 import {ProductCard} from './product-card';
-import {Pagination} from '@/components/shared/pagination';
+import {Pagination} from '@core/components/shared/pagination';
 import {SortDropdown} from './sort-dropdown';
-import {SearchProductsQuery} from "@/lib/vendure/queries";
-import {getActiveChannel} from '@/lib/vendure/actions';
+import {SearchProductsQuery} from "@core/lib/vendure/queries";
+import {getActiveChannel} from '@core/lib/vendure/actions';
 
 interface ProductGridProps {
     productDataPromise: Promise<{

@@ -1,10 +1,10 @@
 import type {Metadata} from 'next';
-import { query } from '@/lib/vendure/api';
+import { query } from '@core/lib/vendure/api';
 
 export const metadata: Metadata = {
     title: 'Addresses',
 };
-import { GetCustomerAddressesQuery, GetAvailableCountriesQuery } from '@/lib/vendure/queries';
+import { GetCustomerAddressesQuery, GetAvailableCountriesQuery } from '@core/lib/vendure/queries';
 import { AddressesClient } from './addresses-client';
 
 export default async function AddressesPage(_props: PageProps<'/account/addresses'>) {

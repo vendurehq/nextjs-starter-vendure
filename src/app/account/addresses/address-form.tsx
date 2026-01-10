@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Field, FieldLabel, FieldError, FieldGroup } from '@/components/ui/field';
 import { useForm, Controller } from 'react-hook-form';
 import { Loader2 } from 'lucide-react';
-import { CountrySelect } from '@/components/shared/country-select';
+import { CountrySelect } from '@core/components/shared/country-select';
 
 interface Country {
   id: string;

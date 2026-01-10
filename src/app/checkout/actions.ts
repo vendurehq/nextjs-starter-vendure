@@ -1,6 +1,6 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
+import {mutate} from '@core/lib/vendure/api';
 import {
     SetOrderShippingAddressMutation,
     SetOrderBillingAddressMutation,
@@ -8,7 +8,7 @@ import {
     AddPaymentToOrderMutation,
     CreateCustomerAddressMutation,
     TransitionOrderToStateMutation,
-} from '@/lib/vendure/mutations';
+} from '@core/lib/vendure/mutations';
 import {revalidatePath, updateTag} from 'next/cache';
 import {redirect} from "next/navigation";
 

@@ -1,9 +1,9 @@
 import { ProductCarousel } from "@core/components/commerce/product-carousel";
 import { cacheLife, cacheTag } from "next/cache";
-import { query } from "@/lib/vendure/api";
-import { GetCollectionProductsQuery } from "@/lib/vendure/queries";
+import { query } from "@core/lib/vendure/api";
+import { GetCollectionProductsQuery } from "@core/lib/vendure/queries";
 import { readFragment } from "@/graphql";
-import { ProductCardFragment } from "@/lib/vendure/fragments";
+import { ProductCardFragment } from "@core/lib/vendure/fragments";
 
 interface RelatedProductsProps {
     collectionSlug: string;

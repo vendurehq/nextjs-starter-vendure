@@ -1,10 +1,10 @@
 import {Suspense} from "react";
 import {FacetFilters} from "@core/components/commerce/facet-filters";
-import {ProductGridSkeleton} from "@/components/shared/product-grid-skeleton";
+import {ProductGridSkeleton} from "@core/components/shared/product-grid-skeleton";
 import {ProductGrid} from "@core/components/commerce/product-grid";
 import {buildSearchInput, getCurrentPage} from "@/lib/search-helpers";
-import {query} from "@/lib/vendure/api";
-import {SearchProductsQuery} from "@/lib/vendure/queries";
+import {query} from "@core/lib/vendure/api";
+import {SearchProductsQuery} from "@core/lib/vendure/queries";
 
 interface SearchResultsProps {
     searchParams: Promise<{
