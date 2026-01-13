@@ -14,7 +14,7 @@ export async function loginAction(prevState: { error?: string } | undefined, for
     const result = await mutate(LoginMutation, {
         username,
         password,
-    });
+    }, { useAuthToken: true });
 
     const loginResult = result.data.login;
 
