@@ -3,45 +3,30 @@ import {NextRequest, NextResponse} from 'next/server';
 import {routing} from '@/i18n/routing';
 import {getActiveChannelCached} from '@/lib/vendure/cached';
 
-// Base tags that vary only by locale.
-const LOCALE_ONLY_BASE_TAGS = ['collections', 'countries'] as const;
+type TagKind = 'locale-only' | 'currency-dependent';
 
-// Base tags that vary by locale AND currency.
-const CURRENCY_DEPENDENT_BASE_TAGS = ['featured'] as const;
-
-// Dynamic tag patterns that vary only by locale.
-// IMPORTANT: checked before currency-dependent patterns so that
-// `collection-meta-{slug}` is not misclassified as `collection-{slug}`.
-const LOCALE_ONLY_DYNAMIC_PATTERNS = [
-    /^collection-meta-.+$/,
-    /^footer$/,
-    /^navbar-collections$/,
-    /^mobile-nav$/,
+// Order matters: `collection-meta-` must precede `collection-` so the meta
+// pattern isn't shadowed by the broader collection pattern.
+const TAG_RULES: ReadonlyArray<{match: string | RegExp; kind: TagKind}> = [
+    {match: 'collections', kind: 'locale-only'},
+    {match: 'countries', kind: 'locale-only'},
+    {match: 'featured', kind: 'currency-dependent'},
+    {match: /^collection-meta-.+$/, kind: 'locale-only'},
+    {match: /^footer$/, kind: 'locale-only'},
+    {match: /^navbar-collections$/, kind: 'locale-only'},
+    {match: /^mobile-nav$/, kind: 'locale-only'},
+    {match: /^product-.+$/, kind: 'currency-dependent'},
+    {match: /^collection-.+$/, kind: 'currency-dependent'},
+    {match: /^related-products-.+$/, kind: 'currency-dependent'},
 ];
 
-// Dynamic tag patterns that vary by locale AND currency.
-const CURRENCY_DEPENDENT_DYNAMIC_PATTERNS = [
-    /^product-.+$/,
-    /^collection-.+$/,
-    /^related-products-.+$/,
-];
+const MAX_TAGS_PER_REQUEST = 100;
 
-type TagClassification = 'locale-only' | 'currency-dependent' | 'invalid';
-
-function classifyTag(tag: string): TagClassification {
-    if ((LOCALE_ONLY_BASE_TAGS as readonly string[]).includes(tag)) {
-        return 'locale-only';
-    }
-    if ((CURRENCY_DEPENDENT_BASE_TAGS as readonly string[]).includes(tag)) {
-        return 'currency-dependent';
-    }
-    if (LOCALE_ONLY_DYNAMIC_PATTERNS.some(p => p.test(tag))) {
-        return 'locale-only';
-    }
-    if (CURRENCY_DEPENDENT_DYNAMIC_PATTERNS.some(p => p.test(tag))) {
-        return 'currency-dependent';
-    }
-    return 'invalid';
+function classifyTag(tag: string): TagKind | null {
+    const rule = TAG_RULES.find(r =>
+        typeof r.match === 'string' ? r.match === tag : r.match.test(tag)
+    );
+    return rule?.kind ?? null;
 }
 
 export async function POST(request: NextRequest) {
@@ -75,15 +60,14 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Currencies are loaded lazily — only fetch if a currency-dependent tag is submitted.
-        let cachedCurrencies: string[] | null = null;
-        const getCurrencies = async (): Promise<string[]> => {
-            if (cachedCurrencies) return cachedCurrencies;
-            const channel = await getActiveChannelCached();
-            cachedCurrencies = channel.availableCurrencyCodes as string[];
-            return cachedCurrencies;
-        };
+        if (tags.length > MAX_TAGS_PER_REQUEST) {
+            return NextResponse.json(
+                {error: `Too many tags (max ${MAX_TAGS_PER_REQUEST})`},
+                {status: 400}
+            );
+        }
 
+        let currencies: string[] | undefined;
         const results: {tag: string; success: boolean; error?: string}[] = [];
 
         for (const tag of tags) {
@@ -92,20 +76,20 @@ export async function POST(request: NextRequest) {
                 continue;
             }
 
-            const classification = classifyTag(tag);
+            const kind = classifyTag(tag);
 
-            if (classification === 'invalid') {
+            if (kind === null) {
                 results.push({tag, success: false, error: 'Unknown tag'});
                 continue;
             }
 
             const expanded: string[] = [];
-            if (classification === 'locale-only') {
+            if (kind === 'locale-only') {
                 for (const locale of routing.locales) {
                     expanded.push(`${tag}-${locale}`);
                 }
             } else {
-                const currencies = await getCurrencies();
+                currencies ??= (await getActiveChannelCached()).availableCurrencyCodes as string[];
                 for (const locale of routing.locales) {
                     for (const currency of currencies) {
                         expanded.push(`${tag}-${locale}-${currency}`);
