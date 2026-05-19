@@ -7,6 +7,7 @@ import * as z from 'zod';
 import {loginAction} from './actions';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
+import {PasswordInput} from '@/components/ui/password-input';
 import {Card, CardContent, CardFooter} from '@/components/ui/card';
 import {
     Form,
@@ -105,8 +106,7 @@ export function LoginForm({redirectTo}: LoginFormProps) {
                                     </div>
 
                                     <FormControl>
-                                        <Input
-                                            type="password"
+                                        <PasswordInput
                                             placeholder="••••••••"
                                             disabled={isPending}
                                             {...field}
