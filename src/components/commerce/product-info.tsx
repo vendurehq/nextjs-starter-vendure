@@ -181,7 +181,7 @@ export function ProductInfo({product, searchParams, currencyCode}: ProductInfoPr
                                             />
                                             <Label
                                                 htmlFor={option.id}
-                                                className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover px-4 py-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:ring-2 peer-data-[state=checked]:ring-primary/20 peer-data-[state=checked]:bg-primary/5 cursor-pointer transition-all"
+                                                className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover px-4 py-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground peer-data-[checked]:border-primary peer-data-[checked]:ring-2 peer-data-[checked]:ring-primary/20 peer-data-[checked]:bg-primary/5 cursor-pointer transition-all"
                                             >
                                                 {option.name}
                                             </Label>
