@@ -4,6 +4,7 @@ import { query } from '@/lib/vendure/api';
 import { GetProductDetailQuery } from '@/lib/vendure/queries';
 import { ProductImageCarousel } from '@/components/commerce/product-image-carousel';
 import { ProductInfo } from '@/components/commerce/product-info';
+import { getDisplayOptionGroups } from '@/lib/vendure/product-options';
 import { RelatedProducts } from '@/components/commerce/related-products';
 import {
     Accordion,
@@ -112,6 +113,10 @@ export default async function ProductDetailPage({params, searchParams}: PageProp
     // Get the primary collection (prefer deepest nested / most specific)
     const primaryCollection = product.collections?.find(c => c.parent?.id) ?? product.collections?.[0];
 
+    // Hide options that belong to a shared option group but have no variant on
+    // this product (Vendure 3.6 shared/global option groups).
+    const productForDisplay = {...product, optionGroups: getDisplayOptionGroups(product)};
+
     return (
         <>
             <div className="container mx-auto px-4 py-8 mt-16">
@@ -146,7 +151,7 @@ export default async function ProductDetailPage({params, searchParams}: PageProp
 
                     {/* Right Column: Product Info */}
                     <div>
-                        <ProductInfo product={product} searchParams={searchParamsResolved} currencyCode={currencyCode} />
+                        <ProductInfo product={productForDisplay} searchParams={searchParamsResolved} currencyCode={currencyCode} />
                     </div>
                 </div>
             </div>
