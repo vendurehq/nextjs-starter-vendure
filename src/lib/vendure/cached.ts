@@ -1,6 +1,7 @@
 import {cacheLife, cacheTag} from 'next/cache';
 import {query} from './api';
 import {GetActiveChannelQuery, GetAvailableCountriesQuery, GetTopCollectionsQuery} from './queries';
+import {storefront} from '@/lib/storefront/config';
 
 /**
  * Get the active channel with caching enabled.
@@ -39,6 +40,10 @@ export async function getTopCollections(locale: string) {
     cacheLife('days');
     cacheTag(`collections-${locale}`);
 
-    const result = await query(GetTopCollectionsQuery, undefined, {languageCode: locale});
+    const result = await query(
+        GetTopCollectionsQuery,
+        {parentId: storefront.catalog.topCollectionsParentId},
+        {languageCode: locale}
+    );
     return result.data.collections.items;
 }

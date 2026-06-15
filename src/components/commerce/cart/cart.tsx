@@ -1,6 +1,6 @@
-import {CartItems} from "@/app/[locale]/cart/cart-items";
-import {OrderSummary} from "@/app/[locale]/cart/order-summary";
-import {PromotionCode} from "@/app/[locale]/cart/promotion-code";
+import {CartItems} from "@/components/commerce/cart/cart-items";
+import {OrderSummary} from "@/components/commerce/cart/order-summary";
+import {PromotionCode} from "@/components/commerce/cart/promotion-code";
 import {getRouteLocale} from "@/i18n/server";
 import {getActiveCurrencyCode} from "@/lib/currency-server";
 import {cacheLife, cacheTag} from "next/cache";

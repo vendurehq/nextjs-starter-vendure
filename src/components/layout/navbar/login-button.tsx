@@ -1,7 +1,7 @@
 'use client'
 
 import {ComponentProps, useTransition} from "react";
-import {logoutAction} from "@/app/[locale]/sign-in/actions";
+import {logoutAction} from "@/lib/commerce/actions/auth";
 import {useRouter} from '@/i18n/navigation';
 import {useTranslations} from 'next-intl';
 

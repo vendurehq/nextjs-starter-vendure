@@ -2,7 +2,7 @@ import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Tag} from 'lucide-react';
-import {applyPromotionCode, removePromotionCode} from './actions';
+import {applyPromotionCode, removePromotionCode} from '@/lib/commerce/actions/cart';
 import {getTranslations} from 'next-intl/server';
 
 type ActiveOrder = {

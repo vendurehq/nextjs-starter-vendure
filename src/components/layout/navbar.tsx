@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {NavigationLink} from '@/components/shared/navigation-link';
 import {NavbarCollections} from '@/components/layout/navbar/navbar-collections';
 import {NavbarCart} from '@/components/layout/navbar/navbar-cart';
@@ -11,6 +10,7 @@ import {Suspense} from "react";
 import {SearchInput} from '@/components/layout/search-input';
 import {NavbarUserSkeleton} from '@/components/shared/skeletons/navbar-user-skeleton';
 import {SearchInputSkeleton} from '@/components/shared/skeletons/search-input-skeleton';
+import {StorefrontLogo} from '@/storefront/components/logo';
 
 export function Navbar() {
     return (
@@ -22,7 +22,7 @@ export function Navbar() {
                             <MobileNavWrapper />
                         </Suspense>
                         <NavigationLink href="/" className="text-xl font-bold">
-                            <Image src="/vendure.svg" alt="Vendure" width={40} height={27} className="h-6 w-auto dark:invert" />
+                            <StorefrontLogo />
                         </NavigationLink>
                         <nav className="hidden md:flex items-center gap-6">
                             <Suspense>

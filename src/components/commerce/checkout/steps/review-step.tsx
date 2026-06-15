@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2, MapPin, Truck, CreditCard, Edit, Mail } from 'lucide-react';
 import { useCheckout } from '../checkout-provider';
-import { placeOrder as placeOrderAction } from '../actions';
+import {placeOrder as placeOrderAction} from '@/lib/commerce/actions/checkout';
 import { Price } from '@/components/commerce/price';
 import {useTranslations} from 'next-intl';
 

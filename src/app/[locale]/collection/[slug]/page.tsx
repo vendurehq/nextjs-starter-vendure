@@ -1,21 +1,8 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import { Link } from '@/i18n/navigation';
 import { query } from '@/lib/vendure/api';
 import { SearchProductsQuery, GetCollectionProductsQuery } from '@/lib/vendure/queries';
-import { ProductGrid } from '@/components/commerce/product-grid';
-import { FacetFilters } from '@/components/commerce/facet-filters';
-import { ProductGridSkeleton } from '@/components/shared/product-grid-skeleton';
 import { buildSearchInput, getCurrentPage } from '@/lib/search-helpers';
 import { cacheLife, cacheTag } from 'next/cache';
-import {
-    Breadcrumb,
-    BreadcrumbList,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
 import { routing } from '@/i18n/routing';
 import {
     SITE_NAME,
@@ -27,6 +14,8 @@ import {toOgLocale} from '@/i18n/locale-utils';
 import {getActiveCurrencyCode} from '@/lib/currency-server';
 import {getRouteLocale} from '@/i18n/server';
 import {getTranslations} from 'next-intl/server';
+import {storefront} from '@/lib/storefront/config';
+import {CollectionView} from '@/storefront/views/collection-view';
 
 async function getCollectionProducts(slug: string, searchParams: { [key: string]: string | string[] | undefined }, currencyCode: string) {
     'use cache';
@@ -39,7 +28,8 @@ async function getCollectionProducts(slug: string, searchParams: { [key: string]
     return query(SearchProductsQuery, {
         input: buildSearchInput({
             searchParams,
-            collectionSlug: slug
+            collectionSlug: slug,
+            take: storefront.catalog.productsPerPage,
         })
     }, {languageCode: locale, currencyCode});
 }
@@ -114,46 +104,19 @@ export default async function CollectionPage({params, searchParams}: PageProps<'
     const currencyCode = await getActiveCurrencyCode();
     const t = await getTranslations({locale, namespace: 'Product'});
     const page = getCurrentPage(searchParamsResolved);
+    const take = storefront.catalog.productsPerPage;
 
     const productDataPromise = getCollectionProducts(slug, searchParamsResolved, currencyCode);
     const collectionResult = await getCollectionMetadata(slug);
     const collectionName = collectionResult.data.collection?.name ?? slug;
 
     return (
-        <div className="container mx-auto px-4 py-8 mt-16">
-            {/* Breadcrumbs */}
-            <Breadcrumb className="mb-6">
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink render={<Link href="/" />}>{t('home')}</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>{collectionName}</BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
-
-            {/* Collection Header */}
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold tracking-tight">{collectionName}</h1>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                {/* Filters Sidebar */}
-                <aside className="lg:col-span-1">
-                    <Suspense fallback={<div className="h-64 animate-pulse bg-muted rounded-lg" />}>
-                        <FacetFilters productDataPromise={productDataPromise} />
-                    </Suspense>
-                </aside>
-
-                {/* Product Grid */}
-                <div className="lg:col-span-3">
-                    <Suspense fallback={<ProductGridSkeleton />}>
-                        <ProductGrid productDataPromise={productDataPromise} currentPage={page} take={12} />
-                    </Suspense>
-                </div>
-            </div>
-        </div>
+        <CollectionView
+            collectionName={collectionName}
+            productDataPromise={productDataPromise}
+            currentPage={page}
+            take={take}
+            translations={{home: t('home')}}
+        />
     );
 }

@@ -23,31 +23,11 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Plus, MoreVertical, Home, CreditCard, Edit2, Trash2 } from 'lucide-react';
-import { AddressForm } from './address-form';
-import { createAddress, updateAddress, deleteAddress, setDefaultShippingAddress, setDefaultBillingAddress } from './actions';
+import type {AddressInput, Country, CustomerAddress, UpdateAddressInput} from '@/lib/commerce/address';
+import {AddressForm} from '@/components/commerce/address-form';
+import {createAddress, updateAddress, deleteAddress, setDefaultShippingAddress, setDefaultBillingAddress} from '@/lib/commerce/actions/account';
 import { useRouter } from '@/i18n/navigation';
 import {useTranslations} from 'next-intl';
-
-interface Country {
-    id: string;
-    code: string;
-    name: string;
-}
-
-interface CustomerAddress {
-    id: string;
-    fullName?: string | null;
-    company?: string | null;
-    streetLine1: string;
-    streetLine2?: string | null;
-    city?: string | null;
-    province?: string | null;
-    postalCode?: string | null;
-    country: { id: string; code: string; name: string };
-    phoneNumber?: string | null;
-    defaultShippingAddress?: boolean | null;
-    defaultBillingAddress?: boolean | null;
-}
 
 interface AddressesClientProps {
     addresses: CustomerAddress[];
@@ -123,12 +103,11 @@ export function AddressesClient({ addresses, countries }: AddressesClientProps) 
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleSubmit = async (data: any) => {
+    const handleSubmit = async (data: AddressInput & {id?: string}) => {
         setIsSubmitting(true);
         try {
             if (editingAddress) {
-                await updateAddress(data);
+                await updateAddress(data as UpdateAddressInput);
             } else {
                 await createAddress(data);
             }

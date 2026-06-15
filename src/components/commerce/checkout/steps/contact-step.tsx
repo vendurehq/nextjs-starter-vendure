@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useForm } from 'react-hook-form';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/navigation';
-import { setCustomerForOrder, SetCustomerForOrderResult } from '../actions';
+import {setCustomerForOrder, type SetCustomerForOrderResult} from '@/lib/commerce/actions/checkout';
 import {useTranslations} from 'next-intl';
 
 interface ContactStepProps {

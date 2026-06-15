@@ -3,7 +3,7 @@ import { Link } from '@/i18n/navigation';
 import {Button} from '@/components/ui/button';
 import {Minus, Plus, X} from 'lucide-react';
 import {Price} from '@/components/commerce/price';
-import {removeFromCart, adjustQuantity} from './actions';
+import {removeFromCart, adjustQuantity} from '@/lib/commerce/actions/cart';
 import {getTranslations} from 'next-intl/server';
 
 type ActiveOrder = {

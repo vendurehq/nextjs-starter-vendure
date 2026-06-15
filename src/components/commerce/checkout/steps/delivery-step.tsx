@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/card';
 import { Loader2, Truck } from 'lucide-react';
 import { useRouter } from '@/i18n/navigation';
 import { useCheckout } from '../checkout-provider';
-import { setShippingMethod as setShippingMethodAction } from '../actions';
+import {setShippingMethod as setShippingMethodAction} from '@/lib/commerce/actions/checkout';
 import {useTranslations, useLocale} from 'next-intl';
 import {toIntlLocale} from '@/i18n/locale-utils';
 
@@ -80,7 +80,7 @@ export default function DeliveryStep({ onComplete }: DeliveryStepProps) {
                       ? t('free')
                       : (method.priceWithTax / 100).toLocaleString(intlLocale, {
                           style: 'currency',
-                          currency: 'USD',
+                          currency: order.currencyCode,
                         })}
                   </p>
                 </div>

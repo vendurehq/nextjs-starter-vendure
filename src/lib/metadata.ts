@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import {storefront} from '@/lib/storefront/config';
 
-export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Vendure Store';
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+export const SITE_NAME = storefront.site.name;
+export const SITE_URL = storefront.site.url;
 
 /**
  * Truncate text to a maximum length, preserving word boundaries.

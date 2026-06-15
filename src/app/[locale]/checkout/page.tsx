@@ -10,11 +10,10 @@ import {
     GetEligibleShippingMethodsQuery,
 } from '@/lib/vendure/queries';
 import {redirect} from '@/i18n/navigation';
-import CheckoutFlow from './checkout-flow';
-import {CheckoutProvider} from './checkout-provider';
 import {noIndexRobots} from '@/lib/metadata';
 import {getActiveCustomer} from '@/lib/vendure/actions';
 import {getAvailableCountriesCached} from '@/lib/vendure/cached';
+import {CheckoutView} from '@/storefront/views/checkout-view';
 
 export async function generateMetadata(): Promise<Metadata> {
     const locale = await getRouteLocale();
@@ -59,18 +58,14 @@ export default async function CheckoutPage() {
         paymentMethodsRes.data.eligiblePaymentMethods?.filter((m) => m.isEligible) || [];
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-8">{t('pageTitle')}</h1>
-            <CheckoutProvider
-                order={activeOrder}
-                addresses={addresses}
-                countries={countries}
-                shippingMethods={shippingMethods}
-                paymentMethods={paymentMethods}
-                isGuest={isGuest}
-            >
-                <CheckoutFlow/>
-            </CheckoutProvider>
-        </div>
+        <CheckoutView
+            title={t('pageTitle')}
+            order={activeOrder}
+            addresses={addresses}
+            countries={countries}
+            shippingMethods={shippingMethods}
+            paymentMethods={paymentMethods}
+            isGuest={isGuest}
+        />
     );
 }

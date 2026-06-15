@@ -1,12 +1,9 @@
-import {routing, type Locale} from './routing';
-
-const OG_LOCALE_MAP: Record<Locale, string> = { en: 'en_US', de: 'de_DE' };
-const INTL_LOCALE_MAP: Record<Locale, string> = { en: 'en-US', de: 'de-DE' };
+import {storefront} from '@/lib/storefront/config';
 
 export function toOgLocale(locale: string): string {
-    return OG_LOCALE_MAP[locale as Locale] || 'en_US';
+    return storefront.i18n.ogLocales[locale] || storefront.i18n.ogLocales[storefront.i18n.defaultLocale] || 'en_US';
 }
 
 export function toIntlLocale(locale: string): string {
-    return INTL_LOCALE_MAP[locale as Locale] || 'en-US';
+    return storefront.i18n.intlLocales[locale] || storefront.i18n.intlLocales[storefront.i18n.defaultLocale] || 'en-US';
 }
