@@ -2,7 +2,6 @@ import type { DeepPartial, StorefrontConfig } from '@/lib/storefront/schema';
 
 export const storefrontConfig = {
     site: {
-        name: 'Vendure Store',
         url: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com',
         logo: {
             src: '/vendure.svg',
