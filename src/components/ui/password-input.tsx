@@ -24,7 +24,6 @@ function PasswordInput({ className, disabled, ...props }: Omit<React.ComponentPr
                 onClick={() => setShowPassword((prev) => !prev)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 disabled={disabled}
-                tabIndex={-1}
                 className="absolute inset-y-0 right-1 my-auto text-muted-foreground hover:text-foreground"
             >
                 {showPassword ? (
