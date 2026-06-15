@@ -75,6 +75,7 @@ export function MobileNav({collections}: MobileNavProps) {
                                     className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-md hover:bg-accent transition-colors"
                                 />
                             }
+                            nativeButton={false}
                             onClick={handleLinkClick}
                         >
                             <ShoppingBag className="h-5 w-5" />
@@ -98,6 +99,7 @@ export function MobileNav({collections}: MobileNavProps) {
                                                 className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-md hover:bg-accent transition-colors"
                                             />
                                         }
+                                        nativeButton={false}
                                         onClick={handleLinkClick}
                                     >
                                         {collection.name}
@@ -120,6 +122,7 @@ export function MobileNav({collections}: MobileNavProps) {
                                         className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-md hover:bg-accent transition-colors"
                                     />
                                 }
+                                nativeButton={false}
                                 onClick={handleLinkClick}
                             >
                                 <User className="h-5 w-5" />
@@ -132,6 +135,7 @@ export function MobileNav({collections}: MobileNavProps) {
                                         className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-md hover:bg-accent transition-colors"
                                     />
                                 }
+                                nativeButton={false}
                                 onClick={handleLinkClick}
                             >
                                 <Package className="h-5 w-5" />
@@ -144,6 +148,7 @@ export function MobileNav({collections}: MobileNavProps) {
                                         className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-md hover:bg-accent transition-colors"
                                     />
                                 }
+                                nativeButton={false}
                                 onClick={handleLinkClick}
                             >
                                 <MapPin className="h-5 w-5" />

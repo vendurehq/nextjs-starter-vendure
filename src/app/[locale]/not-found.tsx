@@ -51,6 +51,7 @@ export default async function NotFound() {
                                 <Button
                                     key={collection.id}
                                     render={<Link href={`/collection/${collection.slug}`} />}
+                                    nativeButton={false}
                                     variant="outline"
                                     size="sm"
                                     className="rounded-full"
