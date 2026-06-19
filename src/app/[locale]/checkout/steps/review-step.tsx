@@ -141,9 +141,7 @@ export default function ReviewStep({ onEditStep }: ReviewStepProps) {
               <div>
                 <p className="font-medium">{selectedPaymentMethod.name}</p>
                 {selectedPaymentMethod.description && (
-                  <p className="text-muted-foreground mt-1">
-                    {selectedPaymentMethod.description}
-                  </p>
+                  <p className="text-muted-foreground mt-1" dangerouslySetInnerHTML={{ __html: selectedPaymentMethod.description }} />
                 )}
               </div>
               <Button

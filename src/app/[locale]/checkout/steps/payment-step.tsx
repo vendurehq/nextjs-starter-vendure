@@ -43,9 +43,7 @@ export default function PaymentStep({ onComplete }: PaymentStepProps) {
                 <div className="flex-1">
                   <p className="font-medium">{method.name}</p>
                   {method.description && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {method.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-1" dangerouslySetInnerHTML={{ __html: method.description }} />
                   )}
                 </div>
               </div>
