@@ -105,6 +105,35 @@ test('change-note validation requires an added note covering the changed area', 
     assert.equal(result.status, 0, result.stderr);
 });
 
+test('a release manifest covers impactful changes after pending notes are consumed', async t => {
+    const temporary = await mkdtemp(path.join(os.tmpdir(), 'vendure-storefront-release-validation-'));
+    t.after(() => rm(temporary, {recursive: true, force: true}));
+    await createValidationFixture(temporary);
+    const base = git(temporary, 'rev-parse', 'HEAD');
+
+    await write(temporary, 'src/features/cart/value.ts', 'export const value = 2;\n');
+    await rm(path.join(temporary, '.upgrades/changes/existing.md'));
+    const manifest = {
+        $schema: '../../../schemas/upgrade-manifest.schema.json',
+        version: '1.0.1',
+        previousVersion: '1.0.0',
+        initial: false,
+        changes: [{
+            id: 'cart-change',
+            type: 'patch',
+            areas: ['cart'],
+            content: note(['cart']).replace(/^---[\s\S]*?---\n/, '').trim(),
+        }],
+    };
+    await write(temporary, '.upgrades/releases/v1.0.1/manifest.json', JSON.stringify(manifest));
+    await write(temporary, '.upgrades/releases/v1.0.1/guide.md', renderReleaseGuide(manifest));
+    git(temporary, 'add', '.');
+    git(temporary, 'commit', '-m', 'test: consume note into release manifest');
+
+    const result = spawnSync(process.execPath, [validateScript, '--base', base], {cwd: temporary, encoding: 'utf8'});
+    assert.equal(result.status, 0, result.stderr);
+});
+
 test('release preparation refuses a dirty tree without consuming notes', async t => {
     const temporary = await mkdtemp(path.join(os.tmpdir(), 'vendure-storefront-release-'));
     t.after(() => rm(temporary, {recursive: true, force: true}));

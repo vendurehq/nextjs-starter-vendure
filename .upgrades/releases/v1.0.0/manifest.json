@@ -25,6 +25,33 @@
         "tooling"
       ],
       "content": "## Intent\n\nEstablish the source-distributed storefront architecture and the first managed upgrade baseline.\n\n## Invariants\n\n- Files under `src/app/` remain thin Next.js route wiring.\n- Storefront behavior remains developer-owned and customizable.\n- Feature, platform, and site dependencies continue to follow the documented module boundaries.\n- Legacy storefronts use explicit best-effort onboarding because no trustworthy pre-v1 baseline exists.\n\n## Integration guidance\n\nPreserve downstream behavior while mapping customized files to their new owners:\n\n| Previous location | Managed-baseline location |\n| --- | --- |\n| `src/app/[locale]/**` implementations | `src/features/*/routes/**`, with thin re-exports under `src/app/` |\n| `src/components/account/**` | `src/features/account/**` |\n| `src/components/commerce/**` | `src/features/orders/**`, `src/features/pricing/**`, or `src/features/products/**` |\n| `src/components/layout/**` | `src/site/**` |\n| `src/components/shared/**` | The owning feature, `src/site/**`, or `src/components/ui/**` |\n| `src/lib/vendure/**` and `src/graphql.ts` | `src/platform/vendure/**` plus feature-owned `graphql.ts` operations |\n| `src/i18n/**` and root `messages/**` | `src/platform/i18n/**` plus feature- and site-owned message files |\n| `src/lib/metadata.ts` | `src/config/metadata.ts` |\n\nWhen a path has downstream edits, move the customization with the behavior instead of replacing it with the upstream file.\n\n## Verification\n\n- Run upgrade validation, tests, lint, type checks, and the production build.\n- Exercise authentication, catalog browsing, cart, checkout, account, locale, currency, and revalidation flows."
+    },
+    {
+      "id": "harden-upgrade-protocol",
+      "type": "patch",
+      "areas": [
+        "account",
+        "authentication",
+        "cart",
+        "checkout",
+        "collections",
+        "orders",
+        "products",
+        "search",
+        "platform.i18n",
+        "site",
+        "tooling"
+      ],
+      "content": "## Intent\n\nHarden provenance, release authoring, change-note validation, verification fingerprints, locale registration, and architecture boundaries after an adversarial review of the initial managed-upgrade protocol.\n\n## Invariants\n\n- Managed upgrades retain exact, inspectable baseline and target commits.\n- Release preparation never consumes uncommitted notes or begins from an invalid configuration.\n- Next.js app files remain explicit re-export shims with substantial behavior owned by feature, platform, or site modules.\n- Feature-internal components remain under their owning feature's private component directory.\n- Feature routes keep their current metadata and route behavior while depending only on lower-level shared modules.\n- English and German message files remain complete and registered under the correct locale.\n\n## Integration guidance\n\nPreserve downstream configuration modules and feature boundaries. If a recorded upstream tag has moved, verify the incident before using the explicit moved-baseline acknowledgement documented in `docs/upgrades.md`. Existing release directories must use stable `vMAJOR.MINOR.PATCH` names.\n\n## Verification\n\n- Run the upgrade protocol, validation, i18n, and architecture regression tests.\n- Run upgrade validation, lint, Next.js type generation, and the production build."
+    },
+    {
+      "id": "use-next-route-types",
+      "type": "patch",
+      "areas": [
+        "platform.next",
+        "tooling"
+      ],
+      "content": "## Intent\n\nUse Next.js-generated route props directly instead of maintaining a duplicate repository-owned route-prop shape.\n\n## Invariants\n\n- Feature route implementations remain delegated from the same files under `src/app/`.\n- Route params and search params retain Next.js 16's asynchronous prop contract.\n\n## Integration guidance\n\nReplace imports from `platform/next/route-types.ts` with `PageProps<'/route'>` or `LayoutProps<'/route'>`, using the corresponding route from the `app/` tree. Preserve downstream route parameters by reflecting them in the filesystem route rather than adding them to a generic type argument.\n\n## Verification\n\n- Run `npm run check-types` to regenerate route declarations and validate each route literal and parameter shape.\n- Run the production build to verify the delegated route exports remain valid Next.js entries."
     }
   ]
 }

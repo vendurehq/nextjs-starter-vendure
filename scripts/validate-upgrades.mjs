@@ -71,13 +71,27 @@ try {
             !file.endsWith('/README.md') &&
             !path.basename(file).startsWith('_')
         );
-        if (impactful.length && addedNotes.length === 0) {
-            throw new Error(`Downstream-impacting files changed without an upgrade note or explicit .none.md exemption:\n${impactful.join('\n')}`);
-        }
+        const addedManifestFiles = changes
+            .filter(({status, file}) =>
+                status === 'A' && /^\.upgrades\/releases\/v\d+\.\d+\.\d+\/manifest\.json$/.test(file)
+            )
+            .map(({file}) => file);
+        const addedManifestChanges = (await Promise.all(addedManifestFiles.map(async file => {
+            const manifest = await readJson(path.join(root, file));
+            await validateUpgradeManifest(root, manifest, file);
+            return manifest.changes;
+        }))).flat();
         const addedExemptions = addedNotes.filter(({file}) => file.endsWith('.none.md'));
+        const addedUpgradeContext = addedNotes.length + addedManifestFiles.length;
+        if (impactful.length && addedUpgradeContext === 0) {
+            throw new Error(`Downstream-impacting files changed without an upgrade note, release manifest, or explicit .none.md exemption:\n${impactful.join('\n')}`);
+        }
         if (impactful.length && addedExemptions.length === 0) {
             const addedNoteIds = new Set(addedNotes.map(({file}) => path.basename(file, '.md')));
-            const declaredAreas = new Set(notes.filter(note => addedNoteIds.has(note.id)).flatMap(note => note.areas));
+            const declaredAreas = new Set([
+                ...notes.filter(note => addedNoteIds.has(note.id)).flatMap(note => note.areas),
+                ...addedManifestChanges.flatMap(change => change.areas),
+            ]);
             const requiredAreas = [...new Set(impactful.map(areaFor))];
             const missingAreas = requiredAreas.filter(area => !declaredAreas.has(area));
             if (missingAreas.length) {
