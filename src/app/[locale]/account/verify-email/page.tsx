@@ -1,1 +1,1 @@
-export {default} from '@/features/authentication/routes/verify-email/page';
+export {default} from '@/features/account/routes/verify-email/page';

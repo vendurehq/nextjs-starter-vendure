@@ -29,7 +29,7 @@ import {
     truncateDescription,
     buildCanonicalUrl,
     buildOgImages,
-} from '@/site/metadata';
+} from '@/config/metadata';
 import {getTranslations} from 'next-intl/server';
 import {toOgLocale} from '@/platform/i18n/locale-utils';
 import {getActiveCurrencyCode} from '@/features/currency/currency-server';

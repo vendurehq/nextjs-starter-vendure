@@ -8,7 +8,7 @@ import {GetCustomerAddressesQuery} from '@/features/account/graphql';
 import {redirect} from '@/platform/i18n/navigation';
 import CheckoutFlow from './checkout-flow';
 import {CheckoutProvider} from './checkout-provider';
-import {noIndexRobots} from '@/site/metadata';
+import {noIndexRobots} from '@/config/metadata';
 import {getActiveCustomer} from '@/features/account/customer';
 import {getAvailableCountriesCached} from '@/features/checkout/countries';
 

@@ -1,4 +1,4 @@
-import {createHash} from 'node:crypto';
+import {createHash, randomUUID} from 'node:crypto';
 import {execFileSync, spawnSync} from 'node:child_process';
 import {
     copyFile,
@@ -10,8 +10,9 @@ import {
     stat,
     writeFile,
 } from 'node:fs/promises';
-import {readFileSync} from 'node:fs';
+import {lstatSync, readFileSync, readlinkSync} from 'node:fs';
 import path from 'node:path';
+import Ajv2020 from 'ajv/dist/2020.js';
 import {parse as parseYaml} from 'yaml';
 import * as tar from 'tar';
 
@@ -58,6 +59,33 @@ export async function writeJson(file, value) {
     await rename(temporary, file);
 }
 
+const schemaValidators = new Map();
+
+async function schemaValidator(root, schemaFile) {
+    const file = path.join(root, 'schemas', schemaFile);
+    let validate = schemaValidators.get(file);
+    if (!validate) {
+        const schema = await readJson(file);
+        validate = new Ajv2020({allErrors: true}).compile(schema);
+        schemaValidators.set(file, validate);
+    }
+    return validate;
+}
+
+function formatSchemaErrors(errors) {
+    return errors
+        .map(error => `${error.instancePath || '/'} ${error.message}`)
+        .join('; ');
+}
+
+export async function validateJsonSchema(root, schemaFile, value, label) {
+    const validate = await schemaValidator(root, schemaFile);
+    if (!validate(value)) {
+        throw new Error(`${label} does not match schemas/${schemaFile}: ${formatSchemaErrors(validate.errors)}`);
+    }
+    return value;
+}
+
 export function gitOutput(root, args, options = {}) {
     return execFileSync('git', args, {
         cwd: root,
@@ -76,30 +104,61 @@ export function assertGitRepository(root) {
 export function assertCleanWorktree(root) {
     const status = gitOutput(root, ['status', '--porcelain=v1', '--untracked-files=all']);
     if (status) {
-        throw new Error('The Git worktree must be clean before preparing or initializing an upgrade. Commit or stash unrelated changes first.');
+        throw new Error('The Git worktree must be clean before this upgrade operation. Commit or stash changes first.');
     }
 }
 
 export async function readStorefrontConfig(root) {
     const file = path.join(root, '.vendure', 'storefront.json');
     const config = await readJson(file);
-    normalizeVersion(config.version);
-    if (!config.upstream || !Array.isArray(config.verification) || config.verification.length === 0) {
-        throw new Error(`${path.relative(root, file)} is missing upstream or verification configuration.`);
-    }
+    await validateJsonSchema(root, 'storefront.schema.json', config, path.relative(root, file));
     return {config, file};
+}
+
+export async function validateUpgradeManifest(root, manifest, label) {
+    return validateJsonSchema(root, 'upgrade-manifest.schema.json', manifest, label);
+}
+
+export function renderReleaseGuide(manifest) {
+    const introduction = manifest.previousVersion
+        ? `Upgrade from v${manifest.previousVersion}.`
+        : [
+            'This is the first managed storefront baseline.',
+            '',
+            'Storefronts created before this release use the best-effort legacy onboarding flow.',
+        ].join('\n');
+    const sections = manifest.changes.flatMap(note => [
+        `## ${note.id}`,
+        '',
+        `Type: ${note.type} · Areas: ${note.areas.join(', ')}`,
+        '',
+        note.content,
+        '',
+    ]);
+    return [
+        `# Vendure storefront v${manifest.version}`,
+        '',
+        introduction,
+        '',
+        ...sections,
+    ].join('\n').trim() + '\n';
 }
 
 export function fetchRelease(root, upstream, version) {
     const normalized = normalizeVersion(version);
+    const ref = `refs/storefront-upgrades/${process.pid}-${randomUUID()}`;
     execFileSync('git', [
         'fetch',
         '--quiet',
         '--no-tags',
         upstream,
-        `refs/tags/v${normalized}`,
+        `+refs/tags/v${normalized}:${ref}`,
     ], {cwd: root, stdio: 'inherit'});
-    return {commit: gitOutput(root, ['rev-parse', 'FETCH_HEAD^{commit}'])};
+    return {commit: gitOutput(root, ['rev-parse', `${ref}^{commit}`]), ref};
+}
+
+export function removeFetchedRelease(root, release) {
+    if (release?.ref) execFileSync('git', ['update-ref', '-d', release.ref], {cwd: root});
 }
 
 async function extractRef(root, ref, destination) {
@@ -110,22 +169,27 @@ async function extractRef(root, ref, destination) {
     await rm(archive);
 }
 
-async function listReleaseVersions(targetSnapshot) {
-    const releases = path.join(targetSnapshot, '.upgrades', 'releases');
+export async function listReleaseVersions(releases, {allowMissing = false} = {}) {
     let entries;
     try {
         entries = await readdir(releases, {withFileTypes: true});
-    } catch {
-        return [];
+    } catch (error) {
+        if (allowMissing && error.code === 'ENOENT') return [];
+        throw error;
     }
-    return entries
-        .filter(entry => entry.isDirectory() && VERSION_PATTERN.test(entry.name.replace(/^v/, '')))
-        .map(entry => entry.name.replace(/^v/, ''))
-        .sort(compareVersions);
+    const versions = [];
+    for (const entry of entries.filter(candidate => candidate.isDirectory())) {
+        if (!/^v\d+\.\d+\.\d+$/.test(entry.name)) {
+            throw new Error(`Invalid release directory "${entry.name}" in ${releases}; expected a name such as v1.2.0.`);
+        }
+        versions.push(normalizeVersion(entry.name));
+    }
+    return versions.sort(compareVersions);
 }
 
 async function copyReleaseContext(targetSnapshot, contextDirectory, fromVersion, targetVersion, legacy) {
-    const versions = (await listReleaseVersions(targetSnapshot)).filter(version =>
+    const releases = path.join(targetSnapshot, '.upgrades', 'releases');
+    const versions = (await listReleaseVersions(releases, {allowMissing: true})).filter(version =>
         compareVersions(version, targetVersion) <= 0 &&
         (legacy || compareVersions(version, fromVersion) > 0)
     );
@@ -189,12 +253,24 @@ export async function initializeStorefront(root) {
     const {config, file} = await readStorefrontConfig(root);
     if (config.commit) throw new Error(`Storefront provenance is already initialized at ${config.commit}.`);
     const release = fetchRelease(root, config.upstream, config.version);
-    config.commit = release.commit;
-    await writeJson(file, config);
-    return release;
+    try {
+        try {
+            execFileSync('git', ['diff', '--quiet', release.commit, 'HEAD', '--', '.'], {cwd: root});
+        } catch (error) {
+            if (error.status === 1) {
+                throw new Error(`The current tree does not match upstream v${config.version}. Initialize from the immutable release tag before recording provenance.`);
+            }
+            throw error;
+        }
+        config.commit = release.commit;
+        await writeJson(file, config);
+        return {commit: release.commit};
+    } finally {
+        removeFetchedRelease(root, release);
+    }
 }
 
-export async function prepareUpgrade(root, requestedVersion, {legacy = false} = {}) {
+export async function prepareUpgrade(root, requestedVersion, {legacy = false, allowMovedBaseline = null} = {}) {
     assertGitRepository(root);
     assertCleanWorktree(root);
     const {config} = await readStorefrontConfig(root);
@@ -209,62 +285,79 @@ export async function prepareUpgrade(root, requestedVersion, {legacy = false} = 
     }
 
     const baseDirectory = path.join(root, '.vendure', 'upgrade-workspace');
-    try {
+    if (await pathExists(baseDirectory)) {
         const existing = await readdir(baseDirectory);
         if (existing.length) throw new Error('An upgrade workspace already exists. Finalize or remove it before preparing another upgrade.');
-    } catch (error) {
-        if (error.code !== 'ENOENT') throw error;
     }
 
-    const target = fetchRelease(root, config.upstream, targetVersion);
-    const fromVersion = legacy ? 'legacy' : config.version;
-    const contextDirectory = path.join(baseDirectory, `${fromVersion}-to-${targetVersion}`);
-    const targetSnapshot = path.join(contextDirectory, 'target');
-    await mkdir(contextDirectory, {recursive: true});
-    await extractRef(root, target.commit, targetSnapshot);
+    let target;
+    let baseline;
+    try {
+        target = fetchRelease(root, config.upstream, targetVersion);
+        const fromVersion = legacy ? 'legacy' : config.version;
+        const contextDirectory = path.join(baseDirectory, `${fromVersion}-to-${targetVersion}`);
+        const targetSnapshot = path.join(contextDirectory, 'target');
+        await mkdir(contextDirectory, {recursive: true});
+        await extractRef(root, target.commit, targetSnapshot);
 
-    let baselineCommit = null;
-    if (!legacy) {
-        const baseline = fetchRelease(root, config.upstream, config.version);
-        if (baseline.commit !== config.commit) {
-            throw new Error(`The recorded v${config.version} commit does not match the upstream tag. Refusing an ambiguous baseline.`);
+        let baselineCommit = null;
+        if (!legacy) {
+            baseline = fetchRelease(root, config.upstream, config.version);
+            if (baseline.commit !== config.commit) {
+                if (allowMovedBaseline !== config.commit) {
+                    throw new Error(`The recorded v${config.version} commit does not match the upstream tag. Refusing an ambiguous baseline. If the tag was intentionally moved, retry with --allow-moved-baseline ${config.commit}.`);
+                }
+                try {
+                    gitOutput(root, ['cat-file', '-e', `${config.commit}^{commit}`]);
+                } catch {
+                    throw new Error(`The recorded baseline commit ${config.commit} is not available locally. Restore that commit before allowing the moved baseline.`);
+                }
+                baselineCommit = config.commit;
+            } else {
+                baselineCommit = baseline.commit;
+            }
+            await extractRef(root, baselineCommit, path.join(contextDirectory, 'baseline'));
         }
-        baselineCommit = baseline.commit;
-        await extractRef(root, baseline.commit, path.join(contextDirectory, 'baseline'));
+
+        const patch = execFileSync('git', [
+            'diff',
+            '--binary',
+            legacy ? 'HEAD' : baselineCommit,
+            target.commit,
+            '--',
+            '.',
+            ':(exclude).vendure/storefront.json',
+        ], {cwd: root, maxBuffer: 100 * 1024 * 1024});
+        await writeFile(path.join(contextDirectory, 'upstream.patch'), patch);
+
+        const versions = await copyReleaseContext(targetSnapshot, contextDirectory, config.version, targetVersion, legacy);
+        const reportPath = `.vendure/upgrade-reports/${legacy ? 'legacy' : `v${config.version}`}-to-v${targetVersion}.md`;
+        await writeFile(path.join(contextDirectory, 'INTEGRATION.md'), makeBrief({
+            fromVersion: config.version,
+            targetVersion,
+            legacy,
+            versions,
+            reportPath,
+        }));
+        await writeJson(path.join(contextDirectory, 'state.json'), {
+            fromVersion: legacy ? null : config.version,
+            baselineCommit,
+            targetVersion,
+            targetCommit: target.commit,
+            legacy,
+            reportPath,
+            preparedAt: new Date().toISOString(),
+            verifiedFingerprint: null,
+            verifiedAt: null,
+        });
+        return {contextDirectory, targetVersion, targetCommit: target.commit, reportPath};
+    } catch (error) {
+        await rm(baseDirectory, {recursive: true, force: true});
+        throw error;
+    } finally {
+        removeFetchedRelease(root, baseline);
+        removeFetchedRelease(root, target);
     }
-
-    const patch = execFileSync('git', [
-        'diff',
-        '--binary',
-        legacy ? 'HEAD' : baselineCommit,
-        target.commit,
-        '--',
-        '.',
-        ':(exclude).vendure/storefront.json',
-    ], {cwd: root, maxBuffer: 100 * 1024 * 1024});
-    await writeFile(path.join(contextDirectory, 'upstream.patch'), patch);
-
-    const versions = await copyReleaseContext(targetSnapshot, contextDirectory, config.version, targetVersion, legacy);
-    const reportPath = `.vendure/upgrade-reports/${legacy ? 'legacy' : `v${config.version}`}-to-v${targetVersion}.md`;
-    await writeFile(path.join(contextDirectory, 'INTEGRATION.md'), makeBrief({
-        fromVersion: config.version,
-        targetVersion,
-        legacy,
-        versions,
-        reportPath,
-    }));
-    await writeJson(path.join(contextDirectory, 'state.json'), {
-        fromVersion: legacy ? null : config.version,
-        baselineCommit,
-        targetVersion,
-        targetCommit: target.commit,
-        legacy,
-        reportPath,
-        preparedAt: new Date().toISOString(),
-        verifiedFingerprint: null,
-        verifiedAt: null,
-    });
-    return {contextDirectory, targetVersion, targetCommit: target.commit, reportPath};
 }
 
 export async function findUpgradeContext(root) {
@@ -282,15 +375,47 @@ export async function findUpgradeContext(root) {
 
 export function worktreeFingerprint(root) {
     const hash = createHash('sha256');
-    hash.update(gitOutput(root, ['rev-parse', 'HEAD']));
-    hash.update(execFileSync('git', ['status', '--porcelain=v1', '--untracked-files=all'], {cwd: root}));
-    hash.update(execFileSync('git', ['diff', '--binary', 'HEAD'], {cwd: root, maxBuffer: 100 * 1024 * 1024}));
-    hash.update(execFileSync('git', ['diff', '--binary', '--cached', 'HEAD'], {cwd: root, maxBuffer: 100 * 1024 * 1024}));
-    const untracked = execFileSync('git', ['ls-files', '--others', '--exclude-standard', '-z'], {cwd: root})
-        .toString('utf8').split('\0').filter(Boolean).sort();
-    for (const relativeFile of untracked) {
-        hash.update(relativeFile);
-        hash.update(readFileSync(path.join(root, relativeFile)));
+    const splitPaths = value => value.toString('utf8').split('\0').filter(Boolean);
+    const tracked = new Set(splitPaths(execFileSync('git', ['ls-files', '--cached', '-z'], {cwd: root})));
+    const visibleUntracked = splitPaths(execFileSync('git', ['ls-files', '--others', '--exclude-standard', '-z'], {cwd: root}));
+    const ignoredEnvironment = splitPaths(execFileSync('git', [
+        'ls-files',
+        '--others',
+        '--ignored',
+        '--exclude-standard',
+        '-z',
+        '--',
+        '.env',
+        '.env.*',
+    ], {cwd: root}));
+    const files = [...new Set([...tracked, ...visibleUntracked, ...ignoredEnvironment])].sort();
+
+    for (const relativeFile of files) {
+        const file = path.join(root, relativeFile);
+        hash.update(`path\0${relativeFile}\0`);
+        let details;
+        try {
+            details = lstatSync(file);
+        } catch (error) {
+            if (error.code === 'ENOENT' && tracked.has(relativeFile)) {
+                hash.update('missing\0');
+                continue;
+            }
+            throw new Error(`Could not fingerprint ${relativeFile}: ${error.message}`);
+        }
+        hash.update(`mode\0${details.mode.toString(8)}\0`);
+        try {
+            if (details.isSymbolicLink()) {
+                hash.update(`symlink\0${readlinkSync(file)}\0`);
+            } else if (details.isFile()) {
+                hash.update('file\0');
+                hash.update(readFileSync(file));
+            } else {
+                throw new Error('unsupported file type');
+            }
+        } catch (error) {
+            throw new Error(`Could not fingerprint ${relativeFile}: ${error.message}`);
+        }
     }
     return hash.digest('hex');
 }
@@ -322,7 +447,7 @@ export async function finalizeUpgrade(root) {
     config.version = context.state.targetVersion;
     config.commit = context.state.targetCommit;
     await writeJson(file, config);
-    await rm(path.join(root, '.vendure', 'upgrade-workspace'), {recursive: true});
+    await rm(path.join(root, '.vendure', 'upgrade-workspace'), {recursive: true, force: true});
     return config;
 }
 
@@ -333,10 +458,21 @@ export async function validateUpgradeReport(file) {
     } catch {
         throw new Error(`Create the required upgrade report at ${file} before verification.`);
     }
-    for (const section of REQUIRED_REPORT_SECTIONS) {
-        if (!new RegExp(`^## ${section}$`, 'm').test(content)) {
-            throw new Error(`Upgrade report is missing the "## ${section}" section.`);
-        }
+    validateRequiredSections(content, REQUIRED_REPORT_SECTIONS, 'Upgrade report');
+}
+
+function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function validateRequiredSections(content, sections, label) {
+    for (const section of sections) {
+        const match = content.match(new RegExp(
+            `^## ${escapeRegExp(section)}\\r?$\\n([\\s\\S]*?)(?=^## |$(?![\\s\\S]))`,
+            'm',
+        ));
+        if (!match) throw new Error(`${label} is missing the "## ${section}" section.`);
+        if (!match[1].trim()) throw new Error(`${label} has an empty "## ${section}" section.`);
     }
 }
 
@@ -353,16 +489,9 @@ export function parseUpgradeNote(content, id, allowedAreas) {
     for (const area of metadata.areas) {
         if (!allowedAreas.includes(area)) throw new Error(`${id}: unknown area "${area}".`);
     }
-    if (typeof metadata.breaking !== 'boolean') throw new Error(`${id}: breaking must be true or false.`);
-    if (metadata.breaking && metadata.type !== 'major') {
-        throw new Error(`${id}: breaking changes must use type: major.`);
-    }
-    for (const section of REQUIRED_NOTE_SECTIONS) {
-        if (!new RegExp(`^## ${section}$`, 'm').test(match[2])) {
-            throw new Error(`${id}: missing "## ${section}" section.`);
-        }
-    }
-    return {id, type: metadata.type, areas: metadata.areas, breaking: metadata.breaking, content: match[2].trim()};
+    if ('breaking' in metadata) throw new Error(`${id}: breaking is derived from type: major and must not be declared separately.`);
+    validateRequiredSections(match[2], REQUIRED_NOTE_SECTIONS, id);
+    return {id, type: metadata.type, areas: metadata.areas, content: match[2].trim()};
 }
 
 export async function readUpgradeNotes(root) {
@@ -390,7 +519,8 @@ export async function pathExists(file) {
     try {
         await stat(file);
         return true;
-    } catch {
-        return false;
+    } catch (error) {
+        if (error.code === 'ENOENT') return false;
+        throw error;
     }
 }

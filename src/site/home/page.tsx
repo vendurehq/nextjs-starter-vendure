@@ -3,7 +3,7 @@ import {Suspense} from "react";
 import {getRouteLocale} from "@/platform/i18n/server";
 import {HeroSection} from "@/site/home/hero-section";
 import {FeaturedProducts} from '@/features/products/featured-products';
-import {SITE_NAME, SITE_URL, buildCanonicalUrl} from "@/site/metadata";
+import {SITE_NAME, SITE_URL, buildCanonicalUrl} from "@/config/metadata";
 import {BadgeCheck, Tag, Zap} from "lucide-react";
 import {getTranslations} from 'next-intl/server';
 import {toOgLocale} from '@/platform/i18n/locale-utils';

@@ -1,11 +1,11 @@
 'use server';
 
 import {setCurrencyCookie} from '@/features/currency/currency';
-import {getActiveChannelCached} from '@/platform/vendure/channel';
+import {getActiveChannel} from '@/platform/vendure/channel';
 import {updateTag} from 'next/cache';
 
 export async function switchCurrency(currencyCode: string) {
-    const channel = await getActiveChannelCached();
+    const channel = await getActiveChannel();
     if (!(channel.availableCurrencyCodes as string[]).includes(currencyCode)) {
         throw new Error('Invalid currency code');
     }

@@ -22,7 +22,6 @@ export async function Cart() {
 
     const activeOrder = data.activeOrder;
 
-    // Handle empty cart case
     if (!activeOrder || activeOrder.lines.length === 0) {
         return <CartItems activeOrder={null}/>;
     }

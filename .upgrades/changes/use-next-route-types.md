@@ -3,7 +3,6 @@ type: patch
 areas:
   - platform.next
   - tooling
-breaking: false
 ---
 
 ## Intent

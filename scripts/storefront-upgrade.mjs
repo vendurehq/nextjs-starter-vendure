@@ -20,7 +20,15 @@ try {
         }
         case 'prepare': {
             const version = args.find(arg => !arg.startsWith('--'));
-            const prepared = await prepareUpgrade(root, version, {legacy: args.includes('--legacy')});
+            const movedBaselineIndex = args.indexOf('--allow-moved-baseline');
+            const allowMovedBaseline = movedBaselineIndex === -1 ? null : args[movedBaselineIndex + 1];
+            if (movedBaselineIndex !== -1 && !allowMovedBaseline) {
+                throw new Error('--allow-moved-baseline requires the recorded commit hash.');
+            }
+            const prepared = await prepareUpgrade(root, version, {
+                legacy: args.includes('--legacy'),
+                allowMovedBaseline,
+            });
             console.log(`Prepared v${prepared.targetVersion} upgrade context.`);
             console.log(`Read ${path.relative(root, path.join(prepared.contextDirectory, 'INTEGRATION.md'))} before editing source.`);
             console.log(`Write the final report to ${prepared.reportPath} before verification.`);
@@ -38,7 +46,7 @@ try {
             break;
         }
         default:
-            throw new Error('Usage: storefront-upgrade.mjs <init|prepare VERSION [--legacy]|verify|finalize>');
+            throw new Error('Usage: storefront-upgrade.mjs <init|prepare VERSION [--legacy] [--allow-moved-baseline COMMIT]|verify|finalize>');
     }
 } catch (error) {
     console.error(`Storefront upgrade failed: ${error.message}`);

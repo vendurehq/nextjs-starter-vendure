@@ -20,8 +20,6 @@
     "home": "Home",
     "noProductsFound": "No products found",
     "shopProductAt": "Shop {name} at {siteName}",
-    "collectionNotFound": "Collection Not Found",
-    "browseCollectionAt": "Browse our {name} collection at {siteName}",
     "productCount": "{count, plural, one {# product} other {# products}}",
     "trustBadges": {
       "fastShipping": "Fast Shipping",

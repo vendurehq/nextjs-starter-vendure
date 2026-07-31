@@ -7,6 +7,7 @@ The storefront is source-distributed: developers own and may change every human-
 ```text
 src/
   app/          Next.js route wiring only
+  config/       Store-wide values shared by features and site composition
   features/     Vertical commerce capabilities
   platform/     Cross-cutting Next.js, i18n, revalidation, and Vendure mechanics
   site/         Store-specific composition, navigation, and branding
@@ -14,6 +15,8 @@ src/
 ```
 
 Feature modules colocate their GraphQL operations, actions, views, messages, and route implementations. The `app/` tree delegates to those route implementations so filesystem routing is not also the primary implementation hotspot.
+
+Dependencies point toward shared configuration and platform mechanics: site modules may compose features, but features must not import from `site/`. ESLint and architecture tests enforce both alias and relative-import boundaries.
 
 ## Feature interfaces
 
@@ -27,7 +30,7 @@ Human-authored GraphQL operations live with the feature that owns their behavior
 
 ## Translations
 
-Translations live with their feature or site module. `platform/i18n/messages.ts` composes locale files and rejects duplicate namespaces. Adding a locale requires adding it to the routing configuration and to every message loader entry.
+Translations live with their feature or site module. Each owner exposes one top-level locale registration, and `site/i18n/messages.ts` composes those registrations while rejecting duplicate namespaces. Adding a feature touches one composition entry; adding a locale stays local to each owner and the routing configuration.
 
 ## Route types
 

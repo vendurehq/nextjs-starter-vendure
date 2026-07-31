@@ -14,12 +14,12 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "type", "areas", "breaking", "content"],
+        "additionalProperties": false,
+        "required": ["id", "type", "areas", "content"],
         "properties": {
           "id": {"type": "string"},
           "type": {"enum": ["patch", "minor", "major"]},
-          "areas": {"type": "array", "items": {"type": "string"}},
-          "breaking": {"type": "boolean"},
+          "areas": {"type": "array", "minItems": 1, "items": {"type": "string"}},
           "content": {"type": "string"}
         }
       }

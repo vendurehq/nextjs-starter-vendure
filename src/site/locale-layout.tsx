@@ -11,7 +11,7 @@ import {Toaster} from "@/components/ui/sonner";
 import {Navbar} from '@/site/navigation/navbar';
 import {Footer} from "@/site/footer";
 import {ThemeProvider} from "@/site/providers/theme-provider";
-import {SITE_NAME, SITE_URL} from "@/site/metadata";
+import {SITE_NAME, SITE_URL} from "@/config/metadata";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",

@@ -1,7 +1,7 @@
 import {NextConfig} from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
-const withNextIntl = createNextIntlPlugin('./src/platform/i18n/request.ts');
+const withNextIntl = createNextIntlPlugin('./src/site/i18n/request.ts');
 
 const nextConfig: NextConfig = {
     cacheComponents: true,

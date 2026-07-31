@@ -2,7 +2,6 @@
 type: patch
 areas:
   - products
-breaking: false
 ---
 
 ## Intent

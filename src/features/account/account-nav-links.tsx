@@ -25,7 +25,7 @@ interface AccountNavLinksProps {
 
 export function AccountNavLinks({items, layout}: AccountNavLinksProps) {
     const pathname = usePathname();
-    const t = useTranslations('Navigation');
+    const t = useTranslations('Account');
 
     if (layout === 'horizontal') {
         return (

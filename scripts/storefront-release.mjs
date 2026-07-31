@@ -1,13 +1,18 @@
 #!/usr/bin/env node
-import {mkdir, readdir, rm, writeFile} from 'node:fs/promises';
+import {mkdir, rm, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {
+    assertCleanWorktree,
+    assertGitRepository,
     compareVersions,
+    listReleaseVersions,
     normalizeVersion,
     pathExists,
     readJson,
     readStorefrontConfig,
     readUpgradeNotes,
+    renderReleaseGuide,
+    validateUpgradeManifest,
     writeJson,
 } from './lib/upgrade-protocol.mjs';
 
@@ -16,18 +21,19 @@ const version = normalizeVersion(process.argv.slice(2).find(arg => !arg.startsWi
 const initial = process.argv.includes('--initial');
 
 try {
+    assertGitRepository(root);
+    assertCleanWorktree(root);
+    const {config, file: configFile} = await readStorefrontConfig(root);
+    const packageFile = path.join(root, 'package.json');
+    const packageJson = await readJson(packageFile);
     const releasesDirectory = path.join(root, '.upgrades', 'releases');
     const destination = path.join(releasesDirectory, `v${version}`);
     if (await pathExists(destination)) throw new Error(`Release v${version} already exists.`);
 
-    const existing = (await readdir(releasesDirectory, {withFileTypes: true}))
-        .filter(entry => entry.isDirectory() && /^v\d+\.\d+\.\d+/.test(entry.name))
-        .map(entry => entry.name.slice(1))
-        .sort(compareVersions);
+    const existing = await listReleaseVersions(releasesDirectory);
     const previousVersion = existing.at(-1) ?? null;
-    if (initial !== (previousVersion === null)) {
-        throw new Error(previousVersion ? 'Only the first managed release may use --initial.' : 'The first managed release requires --initial.');
-    }
+    if (!previousVersion && !initial) throw new Error('The first managed release requires --initial.');
+    if (previousVersion && initial) throw new Error('Only the first managed release may use --initial.');
     if (previousVersion && compareVersions(version, previousVersion) <= 0) {
         throw new Error(`Release v${version} must be newer than v${previousVersion}.`);
     }
@@ -52,42 +58,27 @@ try {
         }
     }
 
-    await mkdir(destination, {recursive: true});
-    await writeJson(path.join(destination, 'manifest.json'), {
+    const manifest = {
         $schema: '../../../schemas/upgrade-manifest.schema.json',
         version,
         previousVersion,
         initial,
         changes: notes,
-    });
+    };
+    await validateUpgradeManifest(root, manifest, `release v${version} manifest`);
 
-    const guide = [
-        `# Vendure storefront v${version}`,
-        '',
-        previousVersion ? `Upgrade from v${previousVersion}.` : 'This is the first managed storefront baseline.',
-        '',
-        ...notes.flatMap(note => [
-            `## ${note.id}`,
-            '',
-            `Type: ${note.type} · Areas: ${note.areas.join(', ')} · Breaking: ${note.breaking ? 'yes' : 'no'}`,
-            '',
-            note.content,
-            '',
-        ]),
-    ].join('\n');
-    await writeFile(path.join(destination, 'guide.md'), `${guide.trim()}\n`);
+    await mkdir(destination, {recursive: true});
+    await writeJson(path.join(destination, 'manifest.json'), manifest);
+    await writeFile(path.join(destination, 'guide.md'), renderReleaseGuide(manifest));
 
-    for (const file of [...files, ...exemptionFiles]) await rm(path.join(changesDirectory, file));
-
-    const packageFile = path.join(root, 'package.json');
-    const packageJson = await readJson(packageFile);
     packageJson.version = version;
     await writeJson(packageFile, packageJson);
 
-    const {config, file: configFile} = await readStorefrontConfig(root);
     config.version = version;
     config.commit = null;
     await writeJson(configFile, config);
+
+    for (const file of [...files, ...exemptionFiles]) await rm(path.join(changesDirectory, file));
 
     console.log(`Prepared release v${version}. Review and commit the generated artifacts before creating the immutable v${version} tag.`);
 } catch (error) {

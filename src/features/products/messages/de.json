@@ -20,8 +20,6 @@
     "home": "Startseite",
     "noProductsFound": "Keine Produkte gefunden",
     "shopProductAt": "{name} bei {siteName} kaufen",
-    "collectionNotFound": "Kategorie nicht gefunden",
-    "browseCollectionAt": "Entdecken Sie unsere {name}-Kollektion bei {siteName}",
     "productCount": "{count, plural, one {# Produkt} other {# Produkte}}",
     "trustBadges": {
       "fastShipping": "Schneller Versand",

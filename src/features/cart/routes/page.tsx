@@ -4,7 +4,7 @@ import {getTranslations} from 'next-intl/server';
 import {Cart} from "@/features/cart/routes/cart";
 import {Suspense} from "react";
 import {CartSkeleton} from "@/features/cart/components/cart-skeleton";
-import {noIndexRobots} from '@/site/metadata';
+import {noIndexRobots} from '@/config/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
     const locale = await getRouteLocale();

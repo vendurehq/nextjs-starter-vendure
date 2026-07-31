@@ -1,6 +1,6 @@
 import {hasLocale} from 'next-intl';
 import {getRequestConfig} from 'next-intl/server';
-import {routing} from './routing';
+import {routing} from '@/platform/i18n/routing';
 import {loadMessages} from './messages';
 
 export default getRequestConfig(async ({requestLocale}) => {

@@ -77,27 +77,7 @@ See the [architecture guide](./docs/architecture.md) before adding a capability.
 ## Upgrading a Customized Storefront
 
 This starter is designed to remain fully source-owned after cloning or forking. Tagged releases include structured integration intent so a human or coding agent can reconcile upstream changes with local customizations.
-
-Initialize a new tagged storefront once:
-
-```bash
-npm run upgrade:init
-```
-
-Prepare a later release from a clean upgrade branch:
-
-```bash
-npm run upgrade:prepare -- 1.1.0
-```
-
-Preparation is read-only with respect to storefront source. Follow the generated integration brief, then verify and finalize the result:
-
-```bash
-npm run upgrade:verify
-npm run upgrade:finalize
-```
-
-Older forks can onboard best-effort with `npm run upgrade:prepare -- 1.0.0 --legacy`. See the complete [upgrade guide](./docs/upgrades.md).
+See the [upgrade guide](./docs/upgrades.md) for initialization, managed upgrades, legacy onboarding, verification, and release authoring.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

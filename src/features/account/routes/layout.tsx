@@ -1,6 +1,6 @@
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
-import {noIndexRobots} from '@/site/metadata';
+import {noIndexRobots} from '@/config/metadata';
 import {AccountNavLinks} from '@/features/account/account-nav-links';
 
 export const metadata: Metadata = {

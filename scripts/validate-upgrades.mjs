@@ -1,15 +1,53 @@
 #!/usr/bin/env node
-import {readdir, readFile} from 'node:fs/promises';
+import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {
     gitOutput,
-    normalizeVersion,
+    listReleaseVersions,
     readJson,
     readStorefrontConfig,
     readUpgradeNotes,
+    renderReleaseGuide,
+    validateUpgradeManifest,
 } from './lib/upgrade-protocol.mjs';
 
 const root = process.cwd();
+
+const impactfulFiles = new Set([
+    '.env.example',
+    '.gitignore',
+    'components.json',
+    'eslint.config.mjs',
+    'graphql.config.yml',
+    'next.config.ts',
+    'package-lock.json',
+    'package.json',
+    'postcss.config.mjs',
+    'tsconfig.json',
+]);
+
+function isImpactful(file) {
+    return [
+        '.github/',
+        'public/',
+        'schemas/',
+        'scripts/',
+        'src/',
+        'tests/',
+    ].some(prefix => file.startsWith(prefix)) ||
+        file === '.upgrades/areas.json' ||
+        impactfulFiles.has(file);
+}
+
+function areaFor(file) {
+    const feature = file.match(/^src\/features\/([^/]+)\//)?.[1];
+    if (feature) return feature;
+    if (file.startsWith('src/platform/i18n/')) return 'platform.i18n';
+    if (file.startsWith('src/platform/next/')) return 'platform.next';
+    if (file.startsWith('src/platform/vendure/') || file.startsWith('src/platform/revalidation/')) return 'platform.vendure';
+    if (file.startsWith('src/site/') || file.startsWith('src/config/')) return 'site';
+    return 'tooling';
+}
 
 try {
     await readStorefrontConfig(root);
@@ -18,37 +56,47 @@ try {
     if (baseIndex !== -1) {
         const base = process.argv[baseIndex + 1];
         if (!base) throw new Error('--base requires a Git ref.');
-        const changed = gitOutput(root, ['diff', '--name-only', `${base}...HEAD`]).split('\n').filter(Boolean);
-        const impactful = changed.filter(file =>
-            file.startsWith('src/') ||
-            file.startsWith('scripts/') ||
-            file.startsWith('schemas/') ||
-            file === 'package.json' ||
-            file === 'package-lock.json' ||
-            file === 'next.config.ts' ||
-            file === 'tsconfig.json'
-        );
-        const changedNotes = changed.filter(file =>
+        const changes = gitOutput(root, ['diff', '--name-status', `${base}...HEAD`])
+            .split('\n')
+            .filter(Boolean)
+            .map(line => {
+                const [status, ...paths] = line.split('\t');
+                return {status, paths, file: paths.at(-1)};
+            });
+        const impactful = [...new Set(changes.flatMap(change => change.paths).filter(isImpactful))];
+        const addedNotes = changes.filter(({status, file}) =>
+            status === 'A' &&
             file.startsWith('.upgrades/changes/') &&
             file.endsWith('.md') &&
             !file.endsWith('/README.md') &&
             !path.basename(file).startsWith('_')
         );
-        if (impactful.length && changedNotes.length === 0) {
+        if (impactful.length && addedNotes.length === 0) {
             throw new Error(`Downstream-impacting files changed without an upgrade note or explicit .none.md exemption:\n${impactful.join('\n')}`);
+        }
+        const addedExemptions = addedNotes.filter(({file}) => file.endsWith('.none.md'));
+        if (impactful.length && addedExemptions.length === 0) {
+            const addedNoteIds = new Set(addedNotes.map(({file}) => path.basename(file, '.md')));
+            const declaredAreas = new Set(notes.filter(note => addedNoteIds.has(note.id)).flatMap(note => note.areas));
+            const requiredAreas = [...new Set(impactful.map(areaFor))];
+            const missingAreas = requiredAreas.filter(area => !declaredAreas.has(area));
+            if (missingAreas.length) {
+                throw new Error(`Added upgrade notes do not cover changed areas: ${missingAreas.join(', ')}.`);
+            }
         }
     }
     const releasesDirectory = path.join(root, '.upgrades', 'releases');
-    const releases = (await readdir(releasesDirectory, {withFileTypes: true})).filter(entry => entry.isDirectory());
-    for (const release of releases) {
-        const version = normalizeVersion(release.name);
-        const manifest = await readJson(path.join(releasesDirectory, release.name, 'manifest.json'));
-        if (manifest.version !== version || !Array.isArray(manifest.changes)) {
-            throw new Error(`${release.name}/manifest.json does not match its release directory.`);
+    const releases = await listReleaseVersions(releasesDirectory);
+    for (const version of releases) {
+        const release = `v${version}`;
+        const manifest = await readJson(path.join(releasesDirectory, release, 'manifest.json'));
+        await validateUpgradeManifest(root, manifest, `${release}/manifest.json`);
+        if (manifest.version !== version) {
+            throw new Error(`${release}/manifest.json does not match its release directory.`);
         }
-        const guide = await readFile(path.join(releasesDirectory, release.name, 'guide.md'), 'utf8');
-        if (!guide.startsWith(`# Vendure storefront v${version}`)) {
-            throw new Error(`${release.name}/guide.md has an invalid title.`);
+        const guide = await readFile(path.join(releasesDirectory, release, 'guide.md'), 'utf8');
+        if (guide !== renderReleaseGuide(manifest)) {
+            throw new Error(`${release}/guide.md does not match its manifest.`);
         }
     }
     console.log(`Validated ${notes.length} pending upgrade note(s), ${exemptionFiles.length} exemption(s), and ${releases.length} release manifest(s).`);

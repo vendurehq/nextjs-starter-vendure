@@ -5,7 +5,7 @@ import {getRouteLocale} from '@/platform/i18n/server';
 import {SearchResults} from "@/features/search/routes/search-results";
 import {SearchTerm, SearchTermSkeleton} from "@/features/search/routes/search-term";
 import {SearchResultsSkeleton} from "@/features/search/components/search-results-skeleton";
-import {SITE_NAME, noIndexRobots} from '@/site/metadata';
+import {SITE_NAME, noIndexRobots} from '@/config/metadata';
 
 export async function generateMetadata({
     searchParams,

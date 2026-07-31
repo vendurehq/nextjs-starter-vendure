@@ -1,8 +1,8 @@
 'use server';
 
 import {mutate} from '@/platform/vendure/api';
-import {LoginMutation, LogoutMutation} from '@/features/authentication/graphql';
-import {removeAuthToken, setAuthToken} from '@/platform/vendure/auth-token';
+import {LoginMutation} from '@/features/authentication/graphql';
+import {setAuthToken} from '@/platform/vendure/auth-token';
 import {redirect} from '@/platform/i18n/navigation';
 import {revalidatePath} from "next/cache";
 import {getLocale, getTranslations} from 'next-intl/server';
@@ -41,13 +41,4 @@ export async function loginAction(prevState: { error?: string } | undefined, for
         : '/';
 
     redirect({href: safeRedirect, locale});
-
-}
-
-export async function logoutAction() {
-    await mutate(LogoutMutation);
-    await removeAuthToken();
-
-    const locale = await getLocale();
-    redirect({href: '/', locale})
 }

@@ -8,7 +8,7 @@ import {Label} from '@/components/ui/label';
 import {RadioGroup, RadioGroupItem} from '@/components/ui/radio-group';
 import {Separator} from '@/components/ui/separator';
 import {ShoppingCart, CheckCircle2} from 'lucide-react';
-import {addToCart} from '@/features/products/routes/actions';
+import {addToCart} from '@/features/products/add-to-cart';
 import {toast} from 'sonner';
 import {Price} from '@/features/pricing/price';
 import {useTranslations} from 'next-intl';

@@ -3,7 +3,7 @@ import {Suspense} from 'react';
 import {getTranslations} from 'next-intl/server';
 import {getRouteLocale} from '@/platform/i18n/server';
 import {OrderConfirmation} from './order-confirmation';
-import {noIndexRobots} from '@/site/metadata';
+import {noIndexRobots} from '@/config/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
     const locale = await getRouteLocale();

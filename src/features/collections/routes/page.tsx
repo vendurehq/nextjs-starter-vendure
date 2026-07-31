@@ -23,7 +23,7 @@ import {
     truncateDescription,
     buildCanonicalUrl,
     buildOgImages,
-} from '@/site/metadata';
+} from '@/config/metadata';
 import {toOgLocale} from '@/platform/i18n/locale-utils';
 import {getActiveCurrencyCode} from '@/features/currency/currency-server';
 import {getRouteLocale} from '@/platform/i18n/server';
@@ -66,7 +66,7 @@ export async function generateMetadata({
     const result = await getCollectionMetadata(slug);
     const collection = result.data.collection;
 
-    const t = await getTranslations({locale, namespace: 'Product'});
+    const t = await getTranslations({locale, namespace: 'Collection'});
 
     if (!collection) {
         return {
@@ -113,7 +113,7 @@ export default async function CollectionPage({params, searchParams}: PageProps<'
     const searchParamsResolved = await searchParams;
     const locale = await getRouteLocale();
     const currencyCode = await getActiveCurrencyCode();
-    const t = await getTranslations({locale, namespace: 'Product'});
+    const t = await getTranslations({locale, namespace: 'Collection'});
     const page = getCurrentPage(searchParamsResolved);
 
     const productDataPromise = getCollectionProducts(slug, searchParamsResolved, currencyCode);

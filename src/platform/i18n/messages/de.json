@@ -1,0 +1,25 @@
+{
+  "Common": {
+    "loading": "Wird geladen...",
+    "sending": "Wird gesendet...",
+    "sku": "Art.-Nr.",
+    "siteDescription": "Entdecken Sie die besten Produkte bei {siteName}. Qualitätsprodukte, wettbewerbsfähige Preise und schnelle Lieferung."
+  },
+  "Errors": {
+    "fieldsRequired": "Alle Felder sind erforderlich",
+    "passwordsMismatch": "Passwörter stimmen nicht überein",
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "emailPasswordRequired": "E-Mail-Adresse und Passwort sind erforderlich",
+    "verifyEmailFirst": "Bitte bestätigen Sie Ihre E-Mail-Adresse, bevor Sie sich anmelden.",
+    "invalidCredentials": "Ungültige E-Mail-Adresse oder Passwort.",
+    "emailRequired": "E-Mail-Adresse ist erforderlich",
+    "firstLastNameRequired": "Vor- und Nachname sind erforderlich",
+    "passwordEmailRequired": "Passwort und neue E-Mail-Adresse sind erforderlich",
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "failedUpdateCustomer": "Kundeninformationen konnten nicht aktualisiert werden",
+    "newPasswordMustDiffer": "Das neue Passwort muss sich vom aktuellen Passwort unterscheiden",
+    "failedPasswordReset": "Passwort-Zurücksetzung konnte nicht angefordert werden",
+    "verificationTokenRequired": "Bestätigungs-Token ist erforderlich",
+    "failedAddToCart": "Artikel konnte nicht zum Warenkorb hinzugefügt werden"
+  }
+}

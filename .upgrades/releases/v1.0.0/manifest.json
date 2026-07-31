@@ -3,5 +3,28 @@
   "version": "1.0.0",
   "previousVersion": null,
   "initial": true,
-  "changes": []
+  "changes": [
+    {
+      "id": "managed-baseline",
+      "type": "major",
+      "areas": [
+        "account",
+        "authentication",
+        "cart",
+        "checkout",
+        "collections",
+        "currency",
+        "orders",
+        "pricing",
+        "products",
+        "search",
+        "platform.i18n",
+        "platform.next",
+        "platform.vendure",
+        "site",
+        "tooling"
+      ],
+      "content": "## Intent\n\nEstablish the source-distributed storefront architecture and the first managed upgrade baseline.\n\n## Invariants\n\n- Files under `src/app/` remain thin Next.js route wiring.\n- Storefront behavior remains developer-owned and customizable.\n- Feature, platform, and site dependencies continue to follow the documented module boundaries.\n- Legacy storefronts use explicit best-effort onboarding because no trustworthy pre-v1 baseline exists.\n\n## Integration guidance\n\nPreserve downstream behavior while mapping customized files to their new owners:\n\n| Previous location | Managed-baseline location |\n| --- | --- |\n| `src/app/[locale]/**` implementations | `src/features/*/routes/**`, with thin re-exports under `src/app/` |\n| `src/components/account/**` | `src/features/account/**` |\n| `src/components/commerce/**` | `src/features/orders/**`, `src/features/pricing/**`, or `src/features/products/**` |\n| `src/components/layout/**` | `src/site/**` |\n| `src/components/shared/**` | The owning feature, `src/site/**`, or `src/components/ui/**` |\n| `src/lib/vendure/**` and `src/graphql.ts` | `src/platform/vendure/**` plus feature-owned `graphql.ts` operations |\n| `src/i18n/**` and root `messages/**` | `src/platform/i18n/**` plus feature- and site-owned message files |\n| `src/lib/metadata.ts` | `src/config/metadata.ts` |\n\nWhen a path has downstream edits, move the customization with the behavior instead of replacing it with the upstream file.\n\n## Verification\n\n- Run upgrade validation, tests, lint, type checks, and the production build.\n- Exercise authentication, catalog browsing, cart, checkout, account, locale, currency, and revalidation flows."
+    }
+  ]
 }

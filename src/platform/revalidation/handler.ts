@@ -1,7 +1,7 @@
 import {revalidateTag} from 'next/cache';
 import {NextRequest, NextResponse} from 'next/server';
 import {routing} from '@/platform/i18n/routing';
-import {getActiveChannelCached} from '@/platform/vendure/channel';
+import {getActiveChannel} from '@/platform/vendure/channel';
 
 type TagKind = 'locale-only' | 'currency-dependent';
 
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
                     expanded.push(`${tag}-${locale}`);
                 }
             } else {
-                currencies ??= (await getActiveChannelCached()).availableCurrencyCodes as string[];
+                currencies ??= (await getActiveChannel()).availableCurrencyCodes as string[];
                 for (const locale of routing.locales) {
                     for (const currency of currencies) {
                         expanded.push(`${tag}-${locale}-${currency}`);
