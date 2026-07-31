@@ -1,4 +1,3 @@
-import type {RouteLayoutProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {noIndexRobots} from '@/site/metadata';
@@ -14,7 +13,7 @@ const navItems = [
     {href: '/account/profile', labelKey: 'profile', icon: 'User'},
 ];
 
-export default async function AccountLayout({children}: RouteLayoutProps) {
+export default async function AccountLayout({children}: LayoutProps<'/[locale]/account'>) {
     return (
         <div className="container mx-auto px-4 py-30">
             {/* Mobile: horizontal tab bar */}

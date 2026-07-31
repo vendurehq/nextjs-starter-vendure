@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type { Metadata } from 'next';
 import { Link } from '@/platform/i18n/navigation';
 import { query } from '@/platform/vendure/api';
@@ -49,7 +48,7 @@ async function getProductData(slug: string, currencyCode: string) {
 
 export async function generateMetadata({
     params,
-}: RoutePageProps<{slug: string}>): Promise<Metadata> {
+}: PageProps<'/[locale]/product/[slug]'>): Promise<Metadata> {
     const { slug } = await params;
     const locale = await getRouteLocale();
     const currencyCode = await getActiveCurrencyCode();
@@ -96,7 +95,10 @@ export async function generateMetadata({
     };
 }
 
-export default async function ProductDetailPage({params, searchParams}: RoutePageProps<{slug: string}>) {
+export default async function ProductDetailPage({
+    params,
+    searchParams,
+}: PageProps<'/[locale]/product/[slug]'>) {
     const { slug } = await params;
     const searchParamsResolved = await searchParams;
     const locale = await getRouteLocale();

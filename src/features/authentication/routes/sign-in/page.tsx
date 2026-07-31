@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {getRouteLocale} from '@/platform/i18n/server';
@@ -47,7 +46,7 @@ async function SignInContent({searchParams}: { searchParams: Promise<Record<stri
     return <LoginForm redirectTo={redirectTo}/>;
 }
 
-export default async function SignInPage({searchParams}: RoutePageProps) {
+export default async function SignInPage({searchParams}: PageProps<'/[locale]/sign-in'>) {
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Auth'});
 

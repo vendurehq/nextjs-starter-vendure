@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {getTranslations} from 'next-intl/server';
@@ -15,7 +14,9 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-export default async function OrderConfirmationPage(props: RoutePageProps<{locale: string; code: string}>) {
+export default async function OrderConfirmationPage(
+    props: PageProps<'/[locale]/order-confirmation/[code]'>
+) {
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Common'});
 

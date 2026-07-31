@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -52,7 +51,7 @@ async function VerifyPendingContent({searchParams}: {searchParams: Promise<Recor
     );
 }
 
-export default async function VerifyPendingPage({searchParams}: RoutePageProps) {
+export default async function VerifyPendingPage({searchParams}: PageProps<'/[locale]/verify-pending'>) {
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Verify'});
     return (

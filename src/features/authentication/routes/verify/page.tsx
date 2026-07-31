@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {Card, CardContent} from '@/components/ui/card';
@@ -28,7 +27,7 @@ function VerifyLoading() {
     );
 }
 
-export default function VerifyPage({searchParams}: RoutePageProps) {
+export default function VerifyPage({searchParams}: PageProps<'/[locale]/verify'>) {
     return (
         <div className="flex min-h-screen items-center justify-center px-4">
             <div className="w-full max-w-md space-y-6">

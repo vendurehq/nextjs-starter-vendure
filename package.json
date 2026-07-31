@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check-types": "tsc --noEmit",
+    "check-types": "next typegen && tsc --noEmit",
     "test": "node --test \"tests/**/*.test.mjs\"",
     "upgrade:init": "node scripts/storefront-upgrade.mjs init",
     "upgrade:prepare": "node scripts/storefront-upgrade.mjs prepare",

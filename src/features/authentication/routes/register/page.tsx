@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {getRouteLocale} from '@/platform/i18n/server';
@@ -62,7 +61,7 @@ async function RegisterContent({searchParams}: {searchParams: Promise<Record<str
     return <RegistrationForm redirectTo={redirectTo} />;
 }
 
-export default async function RegisterPage({searchParams}: RoutePageProps) {
+export default async function RegisterPage({searchParams}: PageProps<'/[locale]/register'>) {
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Auth'});
 

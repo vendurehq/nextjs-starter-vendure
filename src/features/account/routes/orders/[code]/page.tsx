@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {query} from '@/platform/vendure/api';
@@ -7,7 +6,7 @@ import {getTranslations} from 'next-intl/server';
 import {getRouteLocale} from '@/platform/i18n/server';
 import {OrderDetail} from './order-detail';
 
-type OrderDetailPageProps = RoutePageProps<{code: string}>;
+type OrderDetailPageProps = PageProps<'/[locale]/account/orders/[code]'>;
 
 export async function generateMetadata({params}: OrderDetailPageProps): Promise<Metadata> {
     const {code} = await params;
@@ -18,7 +17,7 @@ export async function generateMetadata({params}: OrderDetailPageProps): Promise<
     };
 }
 
-export default async function OrderDetailPage(props: RoutePageProps<{code: string}>) {
+export default async function OrderDetailPage(props: OrderDetailPageProps) {
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Common'});
 

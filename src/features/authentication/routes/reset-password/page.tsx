@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
@@ -9,7 +8,7 @@ export const metadata: Metadata = {
     description: 'Create a new password for your account.',
 };
 
-export default function ResetPasswordPage({searchParams}: RoutePageProps) {
+export default function ResetPasswordPage({searchParams}: PageProps<'/[locale]/reset-password'>) {
     return (
         <div className="container mx-auto px-4 py-16">
             <div className="max-w-md mx-auto">

@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Link } from '@/platform/i18n/navigation';
@@ -61,7 +60,7 @@ async function getCollectionMetadata(slug: string) {
 
 export async function generateMetadata({
     params,
-}: RoutePageProps<{slug: string}>): Promise<Metadata> {
+}: PageProps<'/[locale]/collection/[slug]'>): Promise<Metadata> {
     const { slug } = await params;
     const locale = await getRouteLocale();
     const result = await getCollectionMetadata(slug);
@@ -109,7 +108,7 @@ export async function generateMetadata({
     };
 }
 
-export default async function CollectionPage({params, searchParams}: RoutePageProps<{slug: string}>) {
+export default async function CollectionPage({params, searchParams}: PageProps<'/[locale]/collection/[slug]'>) {
     const { slug } = await params;
     const searchParamsResolved = await searchParams;
     const locale = await getRouteLocale();

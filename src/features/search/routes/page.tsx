@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {getTranslations} from 'next-intl/server';
@@ -10,7 +9,7 @@ import {SITE_NAME, noIndexRobots} from '@/site/metadata';
 
 export async function generateMetadata({
     searchParams,
-}: RoutePageProps): Promise<Metadata> {
+}: PageProps<'/[locale]/search'>): Promise<Metadata> {
     const resolvedParams = await searchParams;
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Search'});
@@ -29,7 +28,7 @@ export async function generateMetadata({
     };
 }
 
-export default async function SearchPage({searchParams}: RoutePageProps) {
+export default async function SearchPage({searchParams}: PageProps<'/[locale]/search'>) {
     return (
         <div className="container mx-auto px-4 py-8 mt-16">
             <Suspense fallback={<SearchTermSkeleton/>}>

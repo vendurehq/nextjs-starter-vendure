@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import type {Metadata} from 'next';
 import {query} from '@/platform/vendure/api';
 import {GetCustomerOrdersQuery} from '@/features/account/graphql';
@@ -31,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const ITEMS_PER_PAGE = 10;
 
-export default async function OrdersPage(props: RoutePageProps) {
+export default async function OrdersPage(props: PageProps<'/[locale]/account/orders'>) {
     const searchParams = await props.searchParams;
     const locale = await getRouteLocale();
     const pageParam = searchParams.page;

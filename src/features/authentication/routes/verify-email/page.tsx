@@ -1,4 +1,3 @@
-import type {RoutePageProps} from '@/platform/next/route-types';
 import { Suspense } from 'react';
 import { mutate } from '@/platform/vendure/api';
 import {UpdateCustomerEmailAddressMutation} from '@/features/account/graphql';
@@ -93,7 +92,7 @@ async function VerifyEmailContent({searchParams}: {searchParams: Promise<Record<
     }
 }
 
-export default async function VerifyEmailPage({searchParams}: RoutePageProps) {
+export default async function VerifyEmailPage({searchParams}: PageProps<'/[locale]/account/verify-email'>) {
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Account'});
 

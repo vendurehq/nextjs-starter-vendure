@@ -31,4 +31,4 @@ Translations live with their feature or site module. `platform/i18n/messages.ts`
 
 ## Route types
 
-Feature route implementations use repository-owned types from `platform/next/route-types.ts`. Next.js-generated route types remain scoped to the thin files under `app/`.
+Feature route implementations use Next.js-generated `PageProps` and `LayoutProps` with their concrete filesystem route. This keeps route parameters checked against the `app/` tree even though the thin files under `app/` delegate their implementations to features.
