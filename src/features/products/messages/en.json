@@ -1,0 +1,52 @@
+{
+  "Product": {
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "addToCart": "Add to Cart",
+    "addedToCart": "Added to Cart",
+    "adding": "Adding...",
+    "selectOptions": "Select Options",
+    "addedToCartMessage": "Added to cart",
+    "addedToCartDescription": "{name} has been added to your cart",
+    "errorTitle": "Error",
+    "errorAddToCart": "Failed to add item to cart",
+    "sku": "SKU: {sku}",
+    "from": "From",
+    "noImage": "No image",
+    "featuredProducts": "Featured Products",
+    "relatedProducts": "Related Products",
+    "viewAllProducts": "View All Products",
+    "notFound": "Product Not Found",
+    "home": "Home",
+    "noProductsFound": "No products found",
+    "shopProductAt": "Shop {name} at {siteName}",
+    "collectionNotFound": "Collection Not Found",
+    "browseCollectionAt": "Browse our {name} collection at {siteName}",
+    "productCount": "{count, plural, one {# product} other {# products}}",
+    "trustBadges": {
+      "fastShipping": "Fast Shipping",
+      "freeReturns": "Free Returns",
+      "secureCheckout": "Secure Checkout",
+      "guarantee": "30-Day Guarantee"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "shipping": {
+        "question": "What are your shipping options?",
+        "answer": "We offer standard shipping (5-7 business days), express shipping (2-3 business days), and next-day delivery for select areas. Free standard shipping is available on orders over $50."
+      },
+      "returns": {
+        "question": "What is your return policy?",
+        "answer": "We accept returns within 30 days of purchase. Items must be unused and in their original packaging. Simply contact our support team to initiate a return and receive a prepaid shipping label."
+      },
+      "tracking": {
+        "question": "How can I track my order?",
+        "answer": "Once your order ships, you'll receive an email with a tracking number. You can also view your order status anytime by logging into your account and visiting the order history section."
+      },
+      "international": {
+        "question": "Do you offer international shipping?",
+        "answer": "Yes! We ship to over 50 countries worldwide. International shipping rates and delivery times vary by location. You can see the exact cost at checkout before completing your purchase."
+      }
+    }
+  }
+}

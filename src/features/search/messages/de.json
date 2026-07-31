@@ -1,0 +1,22 @@
+{
+  "Sort": {
+    "nameAsc": "Name: A bis Z",
+    "nameDesc": "Name: Z bis A",
+    "priceAsc": "Preis: Niedrig bis Hoch",
+    "priceDesc": "Preis: Hoch bis Niedrig",
+    "placeholder": "Sortieren nach"
+  },
+  "Filters": {
+    "title": "Filter",
+    "clearAll": "Alle löschen",
+    "filtersButton": "Filter"
+  },
+  "Search": {
+    "title": "Suche",
+    "pageTitle": "Produkte suchen",
+    "resultsFor": "Suchergebnisse für \"{query}\"",
+    "resultsTitle": "Suchergebnisse für \"{query}\"",
+    "metaDescription": "Produkte für \"{query}\" bei {siteName} finden",
+    "metaCatalogDescription": "Durchsuchen Sie unseren Produktkatalog bei {siteName}"
+  }
+}

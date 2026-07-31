@@ -1,0 +1,17 @@
+[
+  "account",
+  "authentication",
+  "cart",
+  "checkout",
+  "collections",
+  "currency",
+  "orders",
+  "pricing",
+  "products",
+  "search",
+  "platform.i18n",
+  "platform.next",
+  "platform.vendure",
+  "site",
+  "tooling"
+]

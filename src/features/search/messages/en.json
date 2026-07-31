@@ -1,0 +1,22 @@
+{
+  "Sort": {
+    "nameAsc": "Name: A to Z",
+    "nameDesc": "Name: Z to A",
+    "priceAsc": "Price: Low to High",
+    "priceDesc": "Price: High to Low",
+    "placeholder": "Sort by"
+  },
+  "Filters": {
+    "title": "Filters",
+    "clearAll": "Clear all",
+    "filtersButton": "Filters"
+  },
+  "Search": {
+    "title": "Search",
+    "pageTitle": "Search Products",
+    "resultsFor": "Search results for \"{query}\"",
+    "resultsTitle": "Search results for \"{query}\"",
+    "metaDescription": "Find products matching \"{query}\" at {siteName}",
+    "metaCatalogDescription": "Search our product catalog at {siteName}"
+  }
+}

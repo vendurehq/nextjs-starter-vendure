@@ -1,0 +1,25 @@
+{
+  "OrderStatus": {
+    "AddingItems": "Adding Items",
+    "ArrangingPayment": "Arranging Payment",
+    "PaymentAuthorized": "Payment Authorized",
+    "PaymentSettled": "Payment Settled",
+    "PartiallyShipped": "Partially Shipped",
+    "Shipped": "Shipped",
+    "PartiallyDelivered": "Partially Delivered",
+    "Delivered": "Delivered",
+    "Cancelled": "Cancelled"
+  },
+  "OrderConfirmation": {
+    "pageTitle": "Order Confirmation",
+    "orderConfirmed": "Order Confirmed!",
+    "thankYou": "Thank you for your order. Your order number is",
+    "emailConfirmation": "We'll send you an email with your order details and tracking information.",
+    "orderSummary": "Order Summary",
+    "qty": "Qty: {quantity}",
+    "total": "Total",
+    "shippingAddress": "Shipping Address",
+    "continueShopping": "Continue Shopping",
+    "viewOrders": "View Orders"
+  }
+}

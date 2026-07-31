@@ -1,0 +1,52 @@
+{
+  "Product": {
+    "inStock": "Auf Lager",
+    "outOfStock": "Nicht verfügbar",
+    "addToCart": "In den Warenkorb",
+    "addedToCart": "Hinzugefügt",
+    "adding": "Wird hinzugefügt...",
+    "selectOptions": "Optionen wählen",
+    "addedToCartMessage": "In den Warenkorb gelegt",
+    "addedToCartDescription": "{name} wurde Ihrem Warenkorb hinzugefügt",
+    "errorTitle": "Fehler",
+    "errorAddToCart": "Artikel konnte nicht zum Warenkorb hinzugefügt werden",
+    "sku": "Art.-Nr.: {sku}",
+    "from": "Ab",
+    "noImage": "Kein Bild",
+    "featuredProducts": "Empfohlene Produkte",
+    "relatedProducts": "Ähnliche Produkte",
+    "viewAllProducts": "Alle Produkte anzeigen",
+    "notFound": "Produkt nicht gefunden",
+    "home": "Startseite",
+    "noProductsFound": "Keine Produkte gefunden",
+    "shopProductAt": "{name} bei {siteName} kaufen",
+    "collectionNotFound": "Kategorie nicht gefunden",
+    "browseCollectionAt": "Entdecken Sie unsere {name}-Kollektion bei {siteName}",
+    "productCount": "{count, plural, one {# Produkt} other {# Produkte}}",
+    "trustBadges": {
+      "fastShipping": "Schneller Versand",
+      "freeReturns": "Kostenlose Rücksendung",
+      "secureCheckout": "Sicherer Checkout",
+      "guarantee": "30-Tage-Garantie"
+    },
+    "faq": {
+      "title": "Häufig gestellte Fragen",
+      "shipping": {
+        "question": "Welche Versandoptionen bieten Sie an?",
+        "answer": "Wir bieten Standardversand (5–7 Werktage), Expressversand (2–3 Werktage) und Lieferung am nächsten Tag für ausgewählte Gebiete an. Kostenloser Standardversand ist ab einem Bestellwert von 50 € verfügbar."
+      },
+      "returns": {
+        "question": "Wie ist Ihre Rückgaberichtlinie?",
+        "answer": "Wir akzeptieren Rücksendungen innerhalb von 30 Tagen nach dem Kauf. Die Artikel müssen unbenutzt und in der Originalverpackung sein. Kontaktieren Sie einfach unser Support-Team, um eine Rücksendung einzuleiten und ein vorfrankiertes Versandetikett zu erhalten."
+      },
+      "tracking": {
+        "question": "Wie kann ich meine Bestellung verfolgen?",
+        "answer": "Sobald Ihre Bestellung versendet wurde, erhalten Sie eine E-Mail mit einer Sendungsverfolgungsnummer. Sie können den Status Ihrer Bestellung auch jederzeit einsehen, indem Sie sich in Ihr Konto einloggen und den Bestellverlauf aufrufen."
+      },
+      "international": {
+        "question": "Bieten Sie internationalen Versand an?",
+        "answer": "Ja! Wir versenden in über 50 Länder weltweit. Die internationalen Versandkosten und Lieferzeiten variieren je nach Standort. Die genauen Kosten sehen Sie an der Kasse, bevor Sie Ihren Einkauf abschließen."
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Navigation": {
+    "openMenu": "Menü öffnen",
+    "menu": "Menü",
+    "searchProducts": "Produkte suchen...",
+    "shopAll": "Alle Produkte",
+    "collections": "Kategorien",
+    "account": "Konto",
+    "profile": "Profil",
+    "orders": "Bestellungen",
+    "addresses": "Adressen",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "greeting": "Hallo, {name}",
+    "shoppingCart": "Warenkorb",
+    "switchLanguage": "Sprache wechseln",
+    "switchCurrency": "Währung wechseln"
+  }
+}

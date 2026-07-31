@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/vendurehq/nextjs-starter-vendure/main/schemas/storefront.schema.json",
+  "title": "Vendure storefront provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "upstream", "version", "commit", "root", "verification"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "upstream": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"},
+    "commit": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^[0-9a-f]{40,64}$"}
+      ]
+    },
+    "root": {"const": "."},
+    "verification": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

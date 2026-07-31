@@ -1,0 +1,19 @@
+{
+  "Navigation": {
+    "openMenu": "Open menu",
+    "menu": "Menu",
+    "searchProducts": "Search products...",
+    "shopAll": "Shop All",
+    "collections": "Collections",
+    "account": "Account",
+    "profile": "Profile",
+    "orders": "Orders",
+    "addresses": "Addresses",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "greeting": "Hi, {name}",
+    "shoppingCart": "Shopping Cart",
+    "switchLanguage": "Switch language",
+    "switchCurrency": "Switch currency"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/vendurehq/nextjs-starter-vendure/main/schemas/upgrade-manifest.schema.json",
+  "title": "Vendure storefront release upgrade manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "previousVersion", "initial", "changes"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "version": {"type": "string"},
+    "previousVersion": {"type": ["string", "null"]},
+    "initial": {"type": "boolean"},
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "areas", "breaking", "content"],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {"enum": ["patch", "minor", "major"]},
+          "areas": {"type": "array", "items": {"type": "string"}},
+          "breaking": {"type": "boolean"},
+          "content": {"type": "string"}
+        }
+      }
+    }
+  }
+}

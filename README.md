@@ -60,15 +60,44 @@
 
 ## Getting Started
 
-First, run the development server:
+Copy the example environment file, configure your Vendure Shop API, install dependencies, and start the development server:
 
 ```bash
+cp .env.example .env.local
+npm install
 npm run dev
 ```
 
 Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The App Router files under `src/app` are intentionally thin. Storefront behavior and presentation live in vertical modules under `src/features`, cross-cutting integrations under `src/platform`, and store-specific composition under `src/site`.
+
+See the [architecture guide](./docs/architecture.md) before adding a capability.
+
+## Upgrading a Customized Storefront
+
+This starter is designed to remain fully source-owned after cloning or forking. Tagged releases include structured integration intent so a human or coding agent can reconcile upstream changes with local customizations.
+
+Initialize a new tagged storefront once:
+
+```bash
+npm run upgrade:init
+```
+
+Prepare a later release from a clean upgrade branch:
+
+```bash
+npm run upgrade:prepare -- 1.1.0
+```
+
+Preparation is read-only with respect to storefront source. Follow the generated integration brief, then verify and finalize the result:
+
+```bash
+npm run upgrade:verify
+npm run upgrade:finalize
+```
+
+Older forks can onboard best-effort with `npm run upgrade:prepare -- 1.0.0 --legacy`. See the complete [upgrade guide](./docs/upgrades.md).
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

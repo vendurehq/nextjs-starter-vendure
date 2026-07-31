@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../schemas/upgrade-manifest.schema.json",
+  "version": "1.0.0",
+  "previousVersion": null,
+  "initial": true,
+  "changes": []
+}

@@ -1,0 +1,29 @@
+{
+  "Hero": {
+    "title": "Entdecke hochwertige",
+    "titleHighlight": "Produkte",
+    "subtitle": "Hochwertige Produkte zu außergewöhnlichen Preisen. Kostenloser Versand ab 50 €.",
+    "shopNow": "Jetzt einkaufen",
+    "viewCollections": "Kategorien ansehen"
+  },
+  "Home": {
+    "pageTitle": "Ihr One-Stop-Shop",
+    "description": "Entdecken Sie hochwertige Produkte zu wettbewerbsfähigen Preisen. Jetzt einkaufen und die besten Angebote für Elektronik, Mode, Haushaltswaren und mehr finden.",
+    "ogDescription": "Entdecken Sie hochwertige Produkte zu wettbewerbsfähigen Preisen. Jetzt die besten Angebote sichern.",
+    "whyShopWithUs": "Warum bei uns einkaufen",
+    "features": {
+      "highQuality": {
+        "title": "Hohe Qualität",
+        "description": "Sorgfältig ausgewählte Premiumprodukte für Sie"
+      },
+      "bestPrices": {
+        "title": "Beste Preise",
+        "description": "Wettbewerbsfähige Preise für alle unsere Produkte"
+      },
+      "fastDelivery": {
+        "title": "Schnelle Lieferung",
+        "description": "Schneller und zuverlässiger Versand weltweit"
+      }
+    }
+  }
+}
