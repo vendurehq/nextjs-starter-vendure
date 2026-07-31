@@ -29,7 +29,7 @@ export async function verifyAccountAction(token: string, password?: string) {
             await setAuthToken(result.token);
         }
 
-        return {success: true};
+        return {success: true} as const;
     } catch {
         return {error: t('unexpectedError')};
     }

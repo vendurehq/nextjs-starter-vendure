@@ -1,7 +1,8 @@
 'use client';
 
-import {use} from 'react';
-import {VerifyResult} from './verify-result';
+import {use, useEffect, useRef, useState} from 'react';
+import {VerifyResult, type VerifyResultValue} from './verify-result';
+import {VerifyLoading} from './verify-loading';
 import {verifyAccountAction} from './actions';
 import {Card, CardContent} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
@@ -17,6 +18,19 @@ export function VerifyContent({searchParams}: VerifyContentProps) {
     const t = useTranslations('Verify');
     const params = use(searchParams);
     const token = params.token;
+    // A verification token is single-use, so guard against React's development
+    // effect replay submitting the same one twice.
+    const requestedToken = useRef<string | undefined>(undefined);
+    const [result, setResult] = useState<VerifyResultValue>();
+
+    useEffect(() => {
+        if (!token || requestedToken.current === token) return;
+        requestedToken.current = token;
+
+        // The action reports its own failures; this rejects only when the
+        // request itself cannot complete.
+        verifyAccountAction(token).then(setResult, () => setResult({error: ''}));
+    }, [token]);
 
     if (!token) {
         return (
@@ -48,7 +62,5 @@ export function VerifyContent({searchParams}: VerifyContentProps) {
         );
     }
 
-    const verifyPromise = verifyAccountAction(token);
-
-    return <VerifyResult resultPromise={verifyPromise}/>;
+    return result ? <VerifyResult result={result}/> : <VerifyLoading/>;
 }

@@ -1,30 +1,17 @@
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
-import {Card, CardContent} from '@/components/ui/card';
-import {Loader2} from 'lucide-react';
+import {getRouteLocale} from '@/platform/i18n/server';
+import {getTranslations} from 'next-intl/server';
+import {VerifyLoading} from './verify-loading';
 import {VerifyContent} from './verify-content';
 
-export const metadata: Metadata = {
-    title: 'Verify Email',
-    description: 'Verify your email address to complete registration.',
-};
-
-function VerifyLoading() {
-    return (
-        <Card>
-            <CardContent className="pt-6 space-y-4">
-                <div className="flex justify-center">
-                    <Loader2 className="h-16 w-16 text-primary animate-spin"/>
-                </div>
-                <div className="space-y-2 text-center">
-                    <h1 className="text-2xl font-bold">Verifying Your Account</h1>
-                    <p className="text-muted-foreground">
-                        Please wait while we verify your email address...
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
-    );
+export async function generateMetadata(): Promise<Metadata> {
+    const locale = await getRouteLocale();
+    const t = await getTranslations({locale, namespace: 'Verify'});
+    return {
+        title: t('pageTitle'),
+        description: t('pageDescription'),
+    };
 }
 
 export default function VerifyPage({searchParams}: PageProps<'/[locale]/verify'>) {
