@@ -16,7 +16,7 @@ import {parse as parseYaml} from 'yaml';
 import * as tar from 'tar';
 
 export const MANAGED_BASELINE_VERSION = '1.0.0';
-export const VERSION_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
+export const VERSION_PATTERN = /^\d+\.\d+\.\d+$/;
 export const REQUIRED_NOTE_SECTIONS = [
     'Intent',
     'Invariants',
@@ -33,19 +33,18 @@ export const REQUIRED_REPORT_SECTIONS = [
 export function normalizeVersion(value) {
     const version = value?.replace(/^v/, '');
     if (!version || !VERSION_PATTERN.test(version)) {
-        throw new Error(`Expected a semantic version such as 1.2.0; received "${value ?? ''}".`);
+        throw new Error(`Expected a release version such as 1.2.0 (prereleases are not supported); received "${value ?? ''}".`);
     }
     return version;
 }
 
 export function compareVersions(left, right) {
-    const numeric = value => value.split('-', 1)[0].split('.').map(Number);
-    const a = numeric(normalizeVersion(left));
-    const b = numeric(normalizeVersion(right));
+    const a = normalizeVersion(left).split('.').map(Number);
+    const b = normalizeVersion(right).split('.').map(Number);
     for (let index = 0; index < 3; index += 1) {
         if (a[index] !== b[index]) return a[index] - b[index];
     }
-    return left.localeCompare(right);
+    return 0;
 }
 
 export async function readJson(file) {
@@ -93,16 +92,14 @@ export async function readStorefrontConfig(root) {
 
 export function fetchRelease(root, upstream, version) {
     const normalized = normalizeVersion(version);
-    const ref = `refs/storefront-upgrades/v${normalized}`;
     execFileSync('git', [
         'fetch',
         '--quiet',
-        '--force',
         '--no-tags',
         upstream,
-        `refs/tags/v${normalized}:${ref}`,
+        `refs/tags/v${normalized}`,
     ], {cwd: root, stdio: 'inherit'});
-    return {ref, commit: gitOutput(root, ['rev-parse', `${ref}^{commit}`])};
+    return {commit: gitOutput(root, ['rev-parse', 'FETCH_HEAD^{commit}'])};
 }
 
 async function extractRef(root, ref, destination) {
@@ -224,7 +221,7 @@ export async function prepareUpgrade(root, requestedVersion, {legacy = false} = 
     const contextDirectory = path.join(baseDirectory, `${fromVersion}-to-${targetVersion}`);
     const targetSnapshot = path.join(contextDirectory, 'target');
     await mkdir(contextDirectory, {recursive: true});
-    await extractRef(root, target.ref, targetSnapshot);
+    await extractRef(root, target.commit, targetSnapshot);
 
     let baselineCommit = null;
     if (!legacy) {
@@ -233,7 +230,7 @@ export async function prepareUpgrade(root, requestedVersion, {legacy = false} = 
             throw new Error(`The recorded v${config.version} commit does not match the upstream tag. Refusing an ambiguous baseline.`);
         }
         baselineCommit = baseline.commit;
-        await extractRef(root, baseline.ref, path.join(contextDirectory, 'baseline'));
+        await extractRef(root, baseline.commit, path.join(contextDirectory, 'baseline'));
     }
 
     const patch = execFileSync('git', [
