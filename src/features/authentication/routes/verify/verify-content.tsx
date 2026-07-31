@@ -18,8 +18,8 @@ export function VerifyContent({searchParams}: VerifyContentProps) {
     const t = useTranslations('Verify');
     const params = use(searchParams);
     const token = params.token;
-    // A verification token is single-use, so guard against React's development
-    // effect replay submitting the same one twice.
+    // Verification tokens are single-use. Cache each request so effect replay
+    // or returning to a previously seen token cannot submit it twice.
     const requests = useRef(new Map<string, Promise<VerifyResultValue>>());
     const [settled, setSettled] = useState<{token: string; result: VerifyResultValue}>();
 
