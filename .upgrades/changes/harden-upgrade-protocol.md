@@ -22,6 +22,8 @@ Harden provenance, release authoring, change-note validation, verification finge
 
 - Managed upgrades retain exact, inspectable baseline and target commits.
 - Release preparation never consumes uncommitted notes or begins from an invalid configuration.
+- Next.js app files remain explicit re-export shims with substantial behavior owned by feature, platform, or site modules.
+- Feature-internal components remain under their owning feature's private component directory.
 - Feature routes keep their current metadata and route behavior while depending only on lower-level shared modules.
 - English and German message files remain complete and registered under the correct locale.
 

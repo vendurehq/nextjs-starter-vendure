@@ -2,9 +2,11 @@ import assert from 'node:assert/strict';
 import {readdir, readFile} from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
+import ts from 'typescript';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const sourceRoot = path.join(root, 'src');
+const appRoot = path.join(sourceRoot, 'app');
 const featuresRoot = path.join(sourceRoot, 'features');
 const platformRoot = path.join(sourceRoot, 'platform');
 
@@ -23,6 +25,38 @@ function resolveImport(source, specifier) {
     if (specifier.startsWith('.')) return path.resolve(path.dirname(source), specifier);
     return null;
 }
+
+test('Next.js app files remain re-export shims', async () => {
+    const violations = [];
+    for (const file of await findSourceFiles(appRoot)) {
+        const content = await readFile(file, 'utf8');
+        const scriptKind = file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
+        const source = ts.createSourceFile(file, content, ts.ScriptTarget.Latest, true, scriptKind);
+
+        if (source.parseDiagnostics.length) {
+            violations.push(`${path.relative(root, file)} could not be parsed`);
+            continue;
+        }
+
+        let hasReExport = false;
+        for (const statement of source.statements) {
+            const isStylesheetImport = ts.isImportDeclaration(statement)
+                && !statement.importClause
+                && ts.isStringLiteral(statement.moduleSpecifier)
+                && statement.moduleSpecifier.text.endsWith('.css');
+            const isExplicitReExport = ts.isExportDeclaration(statement)
+                && ts.isNamedExports(statement.exportClause)
+                && statement.moduleSpecifier
+                && ts.isStringLiteral(statement.moduleSpecifier);
+            if (isExplicitReExport) hasReExport = true;
+            if (!isStylesheetImport && !isExplicitReExport) {
+                violations.push(`${path.relative(root, file)} contains behavior instead of only explicit re-exports`);
+            }
+        }
+        if (!hasReExport) violations.push(`${path.relative(root, file)} does not explicitly re-export a route module`);
+    }
+    assert.deepEqual(violations, []);
+});
 
 test('features do not depend on site composition or another feature internals', async () => {
     const violations = [];

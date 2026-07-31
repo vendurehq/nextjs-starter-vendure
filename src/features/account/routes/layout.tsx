@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {noIndexRobots} from '@/config/metadata';
-import {AccountNavLinks} from '@/features/account/account-nav-links';
+import {AccountNavLinks} from '@/features/account/components/account-nav-links';
 
 export const metadata: Metadata = {
     robots: noIndexRobots(),
