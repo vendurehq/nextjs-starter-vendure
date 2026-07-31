@@ -14,12 +14,11 @@ Allow registration verification links to complete without invoking a Next.js Ser
 - A returned Vendure auth token is still stored by the Server Action.
 - Missing, invalid, and expired verification tokens retain their existing user-facing outcomes.
 - React development effect replay does not submit the same verification token twice.
-- A verification request that never completes resolves to the failure state rather than an indefinite loading state.
-- The verification page title and description are localized.
+- A verification request that rejects resolves to the failure state rather than an indefinite loading state.
 
 ## Integration guidance
 
-Keep downstream verification-page presentation and navigation customizations, but invoke the verification Server Action from a post-render effect and represent loading as its own component rather than passing a render-created Server Action promise into a Client Component. Downstream overrides of the page's `metadata` export must move to `generateMetadata`.
+Keep downstream verification-page presentation and navigation customizations, but invoke the verification Server Action from a post-render effect and represent loading as its own component rather than passing a render-created Server Action promise into a Client Component.
 
 ## Verification
 

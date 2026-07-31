@@ -51,10 +51,6 @@
     "resettingPassword": "Wird zurückgesetzt..."
   },
   "Verify": {
-    "pageTitle": "E-Mail bestätigen",
-    "pageDescription": "Bestätigen Sie Ihre E-Mail-Adresse, um die Registrierung abzuschließen.",
-    "verifyingAccount": "Ihr Konto wird bestätigt",
-    "verifyingAccountMessage": "Bitte warten Sie, während wir Ihre E-Mail-Adresse bestätigen...",
     "invalidLink": "Ungültiger Bestätigungslink",
     "invalidLinkMessage": "Der Bestätigungslink ist ungültig oder es fehlt ein Token.",
     "createNewAccount": "Neues Konto erstellen",

@@ -20,16 +20,29 @@ export function VerifyContent({searchParams}: VerifyContentProps) {
     const token = params.token;
     // A verification token is single-use, so guard against React's development
     // effect replay submitting the same one twice.
-    const requestedToken = useRef<string | undefined>(undefined);
-    const [result, setResult] = useState<VerifyResultValue>();
+    const requests = useRef(new Map<string, Promise<VerifyResultValue>>());
+    const [settled, setSettled] = useState<{token: string; result: VerifyResultValue}>();
 
     useEffect(() => {
-        if (!token || requestedToken.current === token) return;
-        requestedToken.current = token;
+        if (!token) return;
 
-        // The action reports its own failures; this rejects only when the
-        // request itself cannot complete.
-        verifyAccountAction(token).then(setResult, () => setResult({error: ''}));
+        let request = requests.current.get(token);
+        if (!request) {
+            // The action reports its own failures; this rejects only when the
+            // request itself fails to complete.
+            request = verifyAccountAction(token).catch(
+                (): VerifyResultValue => ({error: ''}),
+            );
+            requests.current.set(token, request);
+        }
+
+        let active = true;
+        request.then(result => {
+            if (active) setSettled({token, result});
+        });
+        return () => {
+            active = false;
+        };
     }, [token]);
 
     if (!token) {
@@ -62,5 +75,7 @@ export function VerifyContent({searchParams}: VerifyContentProps) {
         );
     }
 
-    return result ? <VerifyResult result={result}/> : <VerifyLoading/>;
+    return settled?.token === token
+        ? <VerifyResult result={settled.result}/>
+        : <VerifyLoading/>;
 }

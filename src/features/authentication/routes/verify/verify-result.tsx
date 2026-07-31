@@ -6,7 +6,7 @@ import { Link } from '@/platform/i18n/navigation';
 import {CheckCircle, XCircle} from 'lucide-react';
 import {useTranslations} from 'next-intl';
 
-export type VerifyResultValue = {success: true; error?: undefined} | {error: string; success?: undefined};
+export type VerifyResultValue = {success: boolean; error?: undefined} | {error: string; success?: undefined};
 
 interface VerifyResultProps {
     result: VerifyResultValue;
@@ -15,7 +15,7 @@ interface VerifyResultProps {
 export function VerifyResult({result}: VerifyResultProps) {
     const t = useTranslations('Verify');
 
-    const isSuccess = 'success' in result;
+    const isSuccess = result.success === true;
 
     return (
         <Card>
