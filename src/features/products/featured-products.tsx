@@ -7,6 +7,19 @@ import {GetCollectionProductsQuery} from '@/features/collections/graphql';
 import { Link } from '@/platform/i18n/navigation';
 import {ArrowRight} from "lucide-react";
 import {getTranslations} from 'next-intl/server';
+import {preconnect} from 'react-dom';
+import {readFragment} from '@/platform/vendure/graphql';
+import {ProductCardFragment} from '@/features/products/graphql';
+
+function getAssetOrigin(preview?: string) {
+    if (!preview) return undefined;
+
+    try {
+        return new URL(preview).origin;
+    } catch {
+        return undefined;
+    }
+}
 
 async function getFeaturedCollectionProducts(currencyCode: string) {
     'use cache'
@@ -37,12 +50,21 @@ export async function FeaturedProducts() {
     const currencyCode = await getActiveCurrencyCode();
     const t = await getTranslations({locale, namespace: 'Product'});
     const products = await getFeaturedCollectionProducts(currencyCode);
+    const firstProduct = products[0]
+        ? readFragment(ProductCardFragment, products[0])
+        : undefined;
+    const assetOrigin = getAssetOrigin(firstProduct?.productAsset?.preview);
+
+    if (assetOrigin) {
+        preconnect(assetOrigin);
+    }
 
     return (
         <div>
             <ProductCarousel
                 title={t('featuredProducts')}
                 products={products}
+                preloadFirstProduct
             />
             <div className="container mx-auto px-4 -mt-6 mb-8">
                 <div className="flex justify-center">

@@ -8,9 +8,10 @@ import {useTranslations} from 'next-intl';
 
 interface ProductCardProps {
     product: FragmentOf<typeof ProductCardFragment>;
+    preload?: boolean;
 }
 
-export function ProductCard({product: productProp}: ProductCardProps) {
+export function ProductCard({product: productProp, preload}: ProductCardProps) {
     const t = useTranslations('Product');
     const product = readFragment(ProductCardFragment, productProp);
 
@@ -25,8 +26,9 @@ export function ProductCard({product: productProp}: ProductCardProps) {
                         src={product.productAsset.preview}
                         alt={product.productName}
                         fill
+                        preload={preload}
                         className="object-cover group-hover:scale-105 group-hover:opacity-90 transition-all duration-500"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-muted-foreground">
