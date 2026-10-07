@@ -1,4 +1,5 @@
 import {accountMessageLoaders} from '@/features/account/messages';
+import {aiShoppingAssistantMessageLoaders} from '@/features/ai-shopping-assistant/messages';
 import {authenticationMessageLoaders} from '@/features/authentication/messages';
 import {cartMessageLoaders} from '@/features/cart/messages';
 import {checkoutMessageLoaders} from '@/features/checkout/messages';
@@ -18,6 +19,7 @@ import {siteMessageLoaders} from '@/site/messages';
 
 const registrations: MessageLoaders[] = [
     accountMessageLoaders,
+    aiShoppingAssistantMessageLoaders,
     authenticationMessageLoaders,
     cartMessageLoaders,
     checkoutMessageLoaders,

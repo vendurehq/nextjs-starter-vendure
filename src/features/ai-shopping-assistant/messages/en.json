@@ -1,0 +1,45 @@
+{
+  "ShoppingAssistant": {
+    "title": "Shop with AI",
+    "description": "Describe what you need in your own words, and we'll find matching products from our catalog.",
+    "label": "Describe what you are looking for",
+    "placeholder": "e.g. a laptop with 16GB RAM under $1500",
+    "submit": "Search",
+    "searching": "Searching…",
+    "examplesLabel": "Try:",
+    "examples": {
+      "laptopRam": "laptop with 16GB RAM",
+      "laptopBudget": "laptop under $1500",
+      "nikeShoes": "cheap running shoes from Nike"
+    },
+    "resultCount": "{count, plural, =0 {No matching products} one {# matching product} other {# matching products}}",
+    "criteriaLabel": "Searched for",
+    "criteria": {
+      "query": "“{query}”",
+      "minPrice": "From",
+      "maxPrice": "Up to",
+      "collection": "In {collection}",
+      "sort": {
+        "priceAsc": "Lowest price first",
+        "priceDesc": "Highest price first",
+        "nameAsc": "Name: A to Z",
+        "nameDesc": "Name: Z to A"
+      }
+    },
+    "matchingVariants": "Matching options: {variants}",
+    "unverified": "We couldn't check these requirements against our catalog: {attributes}",
+    "currencyMismatch": "Prices in {requested} were ignored because this store shows prices in {active}.",
+    "noResultsTitle": "No products match all your requirements",
+    "noResultsDescription": "Try removing a requirement or widening your budget.",
+    "browseSearch": "Browse search results",
+    "seeAll": "See all results",
+    "noCriteriaTitle": "Tell us what you are looking for",
+    "noCriteriaDescription": "For example: “{example}”",
+    "invalidRequest": "Please describe what you are looking for in up to {max} characters.",
+    "rateLimitedTitle": "The assistant is busy",
+    "rateLimitedDescription": "Please try again in a minute.",
+    "unavailableTitle": "The assistant is unavailable right now",
+    "unavailableDescription": "You can still find products with the regular search.",
+    "searchInstead": "Search instead"
+  }
+}

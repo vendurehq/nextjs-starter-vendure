@@ -1,0 +1,45 @@
+{
+  "ShoppingAssistant": {
+    "title": "Mit KI einkaufen",
+    "description": "Beschreiben Sie in eigenen Worten, was Sie brauchen, und wir finden passende Produkte aus unserem Katalog.",
+    "label": "Beschreiben Sie, wonach Sie suchen",
+    "placeholder": "z. B. ein Laptop mit 16 GB RAM unter 1500 $",
+    "submit": "Suchen",
+    "searching": "Suche läuft…",
+    "examplesLabel": "Beispiele:",
+    "examples": {
+      "laptopRam": "Laptop mit 16 GB RAM",
+      "laptopBudget": "Laptop unter 1500 $",
+      "nikeShoes": "günstige Laufschuhe von Nike"
+    },
+    "resultCount": "{count, plural, =0 {Keine passenden Produkte} one {# passendes Produkt} other {# passende Produkte}}",
+    "criteriaLabel": "Gesucht nach",
+    "criteria": {
+      "query": "„{query}“",
+      "minPrice": "Ab",
+      "maxPrice": "Bis",
+      "collection": "In {collection}",
+      "sort": {
+        "priceAsc": "Niedrigster Preis zuerst",
+        "priceDesc": "Höchster Preis zuerst",
+        "nameAsc": "Name: A bis Z",
+        "nameDesc": "Name: Z bis A"
+      }
+    },
+    "matchingVariants": "Passende Varianten: {variants}",
+    "unverified": "Diese Anforderungen konnten wir nicht mit unserem Katalog abgleichen: {attributes}",
+    "currencyMismatch": "Preise in {requested} wurden ignoriert, da dieser Shop Preise in {active} anzeigt.",
+    "noResultsTitle": "Keine Produkte erfüllen alle Ihre Anforderungen",
+    "noResultsDescription": "Entfernen Sie eine Anforderung oder erhöhen Sie Ihr Budget.",
+    "browseSearch": "Suchergebnisse ansehen",
+    "seeAll": "Alle Ergebnisse ansehen",
+    "noCriteriaTitle": "Sagen Sie uns, wonach Sie suchen",
+    "noCriteriaDescription": "Zum Beispiel: „{example}“",
+    "invalidRequest": "Bitte beschreiben Sie Ihren Wunsch in höchstens {max} Zeichen.",
+    "rateLimitedTitle": "Der Assistent ist ausgelastet",
+    "rateLimitedDescription": "Bitte versuchen Sie es in einer Minute erneut.",
+    "unavailableTitle": "Der Assistent ist gerade nicht verfügbar",
+    "unavailableDescription": "Über die normale Suche finden Sie weiterhin Produkte.",
+    "searchInstead": "Stattdessen suchen"
+  }
+}
